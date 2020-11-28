@@ -2,53 +2,53 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Michaeljian</title>
-    <link>http://Michaeljian.github.io/categories/</link>
+    <link>http://Michaeljian.top/categories/</link>
     <description>Recent content in Categories on Michaeljian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 15 Jan 2020 19:17:46 +0000</lastBuildDate><atom:link href="http://Michaeljian.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Jan 2020 19:17:46 +0000</lastBuildDate><atom:link href="http://Michaeljian.top/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>数据库</title>
-      <link>http://Michaeljian.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+      <link>http://Michaeljian.top/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
       <pubDate>Wed, 15 Jan 2020 19:17:46 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
+      <guid>http://Michaeljian.top/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
       <description></description>
     </item>
     
     <item>
       <title>大数据</title>
-      <link>http://Michaeljian.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/</link>
+      <link>http://Michaeljian.top/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/</link>
       <pubDate>Sat, 09 Nov 2019 16:19:02 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/</guid>
+      <guid>http://Michaeljian.top/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>http://Michaeljian.github.io/categories/python/</link>
+      <link>http://Michaeljian.top/categories/python/</link>
       <pubDate>Sun, 28 Jul 2019 21:59:37 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/categories/python/</guid>
+      <guid>http://Michaeljian.top/categories/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>算法</title>
-      <link>http://Michaeljian.github.io/categories/%E7%AE%97%E6%B3%95/</link>
+      <link>http://Michaeljian.top/categories/%E7%AE%97%E6%B3%95/</link>
       <pubDate>Sat, 15 Sep 2018 15:19:44 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/categories/%E7%AE%97%E6%B3%95/</guid>
+      <guid>http://Michaeljian.top/categories/%E7%AE%97%E6%B3%95/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Java</title>
-      <link>http://Michaeljian.github.io/categories/java/</link>
+      <link>http://Michaeljian.top/categories/java/</link>
       <pubDate>Sat, 17 Mar 2018 15:18:16 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/categories/java/</guid>
+      <guid>http://Michaeljian.top/categories/java/</guid>
       <description></description>
     </item>
     

@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: http://Michaeljian.github.io/sitemap.xml
+Sitemap: http://Michaeljian.top/sitemap.xml

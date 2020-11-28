@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Michaeljian</title>
-    <link>http://Michaeljian.github.io/</link>
+    <link>http://Michaeljian.top/</link>
     <description>Recent content on Michaeljian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 15 Jan 2020 19:17:46 +0000</lastBuildDate><atom:link href="http://Michaeljian.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Jan 2020 19:17:46 +0000</lastBuildDate><atom:link href="http://Michaeljian.top/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
-      <link>http://Michaeljian.github.io/about/</link>
+      <link>http://Michaeljian.top/about/</link>
       <pubDate>Sun, 20 Aug 2017 21:38:52 +0800</pubDate>
       
-      <guid>http://Michaeljian.github.io/about/</guid>
+      <guid>http://Michaeljian.top/about/</guid>
       <description>Hugo is a static site engine written in Go.
 It makes use of a variety of open source projects including:
  Cobra Viper J Walter Weatherman Cast  Learn more and contribute on GitHub.</description>
@@ -20,163 +20,163 @@ It makes use of a variety of open source projects including:
     
     <item>
       <title>转MySQL设计规范（重点）</title>
-      <link>http://Michaeljian.github.io/post/%E8%BD%ACmysql%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%E9%87%8D%E7%82%B9/</link>
+      <link>http://Michaeljian.top/post/%E8%BD%ACmysql%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%E9%87%8D%E7%82%B9/</link>
       <pubDate>Wed, 15 Jan 2020 19:17:46 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E8%BD%ACmysql%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%E9%87%8D%E7%82%B9/</guid>
+      <guid>http://Michaeljian.top/post/%E8%BD%ACmysql%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%E9%87%8D%E7%82%B9/</guid>
       <description>&lt;p&gt;这篇文章涉及到的规范和建议是十分实用性的，在实际的工作中经常会碰到，这篇文章适合反复的看，最后将上面的知识点形成自己的工作习惯。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Spark Shuffle的基本原理分析</title>
-      <link>http://Michaeljian.github.io/post/spark-shuffle%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</link>
+      <link>http://Michaeljian.top/post/spark-shuffle%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</link>
       <pubDate>Sat, 09 Nov 2019 16:19:02 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/spark-shuffle%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</guid>
+      <guid>http://Michaeljian.top/post/spark-shuffle%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</guid>
       <description>&lt;p&gt;这篇主要根据官网对Shuffle的介绍做了梳理和分析，并参考下面资料中的部分内容加以理解，对英文官网上的每一句话应该细细体味，目前的能力还有欠缺，以后慢慢补。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Python的基本数据结构</title>
-      <link>http://Michaeljian.github.io/post/python%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+      <link>http://Michaeljian.top/post/python%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
       <pubDate>Sun, 28 Jul 2019 21:59:37 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/python%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
+      <guid>http://Michaeljian.top/post/python%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
       <description>&lt;p&gt;回顾一下Python的基础数据结构，接下来工作可能更多用到的是利用Python对数据的ETL的处理以及利用Python进行自动化运维。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Postgresql与MySQL的区别</title>
-      <link>http://Michaeljian.github.io/post/postgresql%E4%B8%8Emysql%E7%9A%84%E5%8C%BA%E5%88%AB/</link>
+      <link>http://Michaeljian.top/post/postgresql%E4%B8%8Emysql%E7%9A%84%E5%8C%BA%E5%88%AB/</link>
       <pubDate>Mon, 18 Mar 2019 16:55:01 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/postgresql%E4%B8%8Emysql%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
+      <guid>http://Michaeljian.top/post/postgresql%E4%B8%8Emysql%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
       <description>&lt;p&gt;在学习具体的Postgresql用法之前，我们来思考一下Postgresql与目前最常用的关系型数据库MySQL的区别在哪里，主要集中在两者的底层结构、使用场景和特别之处。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>如何设计实现一个LRU Cache</title>
-      <link>http://Michaeljian.github.io/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</link>
+      <link>http://Michaeljian.top/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</link>
       <pubDate>Sat, 15 Sep 2018 15:19:44 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</guid>
+      <guid>http://Michaeljian.top/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</guid>
       <description>&lt;p&gt;这道题是把操作系统和Java集合类联系起来的一道题目，是非常值得研究的一道题目。（思考点：缓存的算法设计和需要缓存的数据是以什么样的数据格式存放在那种数据结构中，这种数据结构可以有效的实现缓存的作用。）&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>约瑟夫算法</title>
-      <link>http://Michaeljian.github.io/post/%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%AE%97%E6%B3%95/</link>
+      <link>http://Michaeljian.top/post/%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%AE%97%E6%B3%95/</link>
       <pubDate>Tue, 11 Sep 2018 22:17:11 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%AE%97%E6%B3%95/</guid>
+      <guid>http://Michaeljian.top/post/%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%AE%97%E6%B3%95/</guid>
       <description>&lt;p&gt;约瑟夫环问题是一个非常著名的趣题，即由n个人坐成一圈，按顺时针由1开始给他们编号。然后由第一个人开始报数，数到m的人出局。之后从下一个人开始继续报数，直到所有人都死亡为止。现在需要求的是最后一个出局的人的编号。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>最长回文子串</title>
-      <link>http://Michaeljian.github.io/post/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</link>
+      <link>http://Michaeljian.top/post/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</link>
       <pubDate>Fri, 31 Aug 2018 11:42:06 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</guid>
+      <guid>http://Michaeljian.top/post/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</guid>
       <description>&lt;p&gt;回文串是一个正读和反读都一样的字符串，比如&lt;code&gt;level&lt;/code&gt;或者&lt;code&gt;noon&lt;/code&gt;等等就是回文串。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>最长上升子序列</title>
-      <link>http://Michaeljian.github.io/post/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97/</link>
+      <link>http://Michaeljian.top/post/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97/</link>
       <pubDate>Tue, 28 Aug 2018 21:51:41 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97/</guid>
+      <guid>http://Michaeljian.top/post/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97/</guid>
       <description>&lt;p&gt;利用这个题目好好学习下动态规划，一直对动态规划不太理解。所以这边尽量以通俗易懂的语言将明白。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>图的BFS和DFS</title>
-      <link>http://Michaeljian.github.io/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/</link>
+      <link>http://Michaeljian.top/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/</link>
       <pubDate>Sun, 19 Aug 2018 09:59:59 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/</guid>
+      <guid>http://Michaeljian.top/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/</guid>
       <description>&lt;p&gt;图的遍历对于图这类题目来说非常重要，但是图的实现又非常的难。在这里我介绍下图的广度优先遍历和深度优先遍历，讲一下其中的算法思想。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>跳跃游戏</title>
-      <link>http://Michaeljian.github.io/post/%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/</link>
+      <link>http://Michaeljian.top/post/%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/</link>
       <pubDate>Sun, 12 Aug 2018 11:19:05 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/</guid>
+      <guid>http://Michaeljian.top/post/%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/</guid>
       <description>&lt;p&gt;在跳跃游戏中，要明白贪心法则的定义。贪心法则：最基本的理解就是，每次选择当前最优的解，到最后就能得到整个问题的最优解法。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>字典排序算法</title>
-      <link>http://Michaeljian.github.io/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/</link>
+      <link>http://Michaeljian.top/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/</link>
       <pubDate>Sun, 12 Aug 2018 09:55:56 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/</guid>
+      <guid>http://Michaeljian.top/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/</guid>
       <description>&lt;p&gt;在数学，字典或词典顺序（也称为词汇顺序，字典顺序，字母顺序或词典顺序）是基于字母顺序排列的单词按字母顺序排列的方法 。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>深入理解Java虚拟机之垃圾收集算法篇</title>
-      <link>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95%E7%AF%87/</link>
+      <link>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95%E7%AF%87/</link>
       <pubDate>Sat, 17 Mar 2018 15:18:16 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95%E7%AF%87/</guid>
+      <guid>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95%E7%AF%87/</guid>
       <description>&lt;p&gt;这篇文章将讲解垃圾回收的概念以及对那些区域进行垃圾回收，最后讲解几种常见的垃圾回收算法。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>深入理解Java虚拟机之类的加载机制</title>
-      <link>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E7%AF%87/</link>
+      <link>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E7%AF%87/</link>
       <pubDate>Sun, 11 Mar 2018 16:43:44 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E7%AF%87/</guid>
+      <guid>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E7%AF%87/</guid>
       <description>&lt;p&gt;代码编译的结果从本地机器转变为字节码，是存储格式发展的一小步，却是编译语言发展的一大步。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>深入理解Java虚拟机之内存管理篇</title>
-      <link>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AF%87/</link>
+      <link>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AF%87/</link>
       <pubDate>Thu, 08 Mar 2018 19:06:35 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AF%87/</guid>
+      <guid>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AF%87/</guid>
       <description>&lt;p&gt;这篇文章主要讲解Java虚拟机的内存分布以及对象的创建。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>深入Java虚拟机之概念篇</title>
-      <link>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E6%A6%82%E5%BF%B5%E7%AF%87/</link>
+      <link>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E6%A6%82%E5%BF%B5%E7%AF%87/</link>
       <pubDate>Thu, 08 Mar 2018 18:28:51 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E6%A6%82%E5%BF%B5%E7%AF%87/</guid>
+      <guid>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E6%A6%82%E5%BF%B5%E7%AF%87/</guid>
       <description>&lt;p&gt;搞清楚Java虚拟机的基本概念是十分必要的，知道Java程序为什么是跨平台的，Java语言的特性等，这些都是对以后的开发十分有帮助的，文本以sun公司的HotSpot虚拟机为例。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>深入浅出MySQL之开发篇（二）</title>
-      <link>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%BA%8C/</link>
+      <link>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%BA%8C/</link>
       <pubDate>Mon, 26 Feb 2018 20:28:10 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%BA%8C/</guid>
+      <guid>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%BA%8C/</guid>
       <description>&lt;p&gt;继续讲解mysql的高级特性包括存储过程、游标、流程控制、触发器、事务等知识。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>深入浅出MySQL之开发篇（一）</title>
-      <link>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%B8%80/</link>
+      <link>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%B8%80/</link>
       <pubDate>Fri, 16 Feb 2018 17:24:11 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%B8%80/</guid>
+      <guid>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%B8%80/</guid>
       <description>&lt;p&gt;数据库的基础知识介绍完了，下面介绍的是在开发过程要需要注意的知识点，这样对提高数据库的性能十分重要！&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>深入浅出MySQL之基础篇</title>
-      <link>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%9F%BA%E7%A1%80%E7%AF%87/</link>
+      <link>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%9F%BA%E7%A1%80%E7%AF%87/</link>
       <pubDate>Mon, 12 Feb 2018 13:25:02 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%9F%BA%E7%A1%80%E7%AF%87/</guid>
+      <guid>http://Michaeljian.top/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%9F%BA%E7%A1%80%E7%AF%87/</guid>
       <description>&lt;p&gt;对于Java后台开发，掌握掌握数据库相关的知识是必不可少的。一直觉得数据库是自己的最薄弱的环节，趁寒假时间对数据库知识做一个补充！&lt;/p&gt;</description>
     </item>
     

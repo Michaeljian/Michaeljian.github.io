@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DFS on Michaeljian</title>
-    <link>http://Michaeljian.github.io/tags/dfs/</link>
+    <link>http://Michaeljian.top/tags/dfs/</link>
     <description>Recent content in DFS on Michaeljian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 19 Aug 2018 09:59:59 +0000</lastBuildDate><atom:link href="http://Michaeljian.github.io/tags/dfs/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 19 Aug 2018 09:59:59 +0000</lastBuildDate><atom:link href="http://Michaeljian.top/tags/dfs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>图的BFS和DFS</title>
-      <link>http://Michaeljian.github.io/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/</link>
+      <link>http://Michaeljian.top/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/</link>
       <pubDate>Sun, 19 Aug 2018 09:59:59 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/</guid>
+      <guid>http://Michaeljian.top/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/</guid>
       <description>&lt;p&gt;图的遍历对于图这类题目来说非常重要，但是图的实现又非常的难。在这里我介绍下图的广度优先遍历和深度优先遍历，讲一下其中的算法思想。&lt;/p&gt;</description>
     </item>
     

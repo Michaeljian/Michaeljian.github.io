@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cache on Michaeljian</title>
-    <link>http://Michaeljian.github.io/tags/cache/</link>
+    <link>http://Michaeljian.top/tags/cache/</link>
     <description>Recent content in Cache on Michaeljian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 15 Sep 2018 15:19:44 +0000</lastBuildDate><atom:link href="http://Michaeljian.github.io/tags/cache/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Sep 2018 15:19:44 +0000</lastBuildDate><atom:link href="http://Michaeljian.top/tags/cache/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>如何设计实现一个LRU Cache</title>
-      <link>http://Michaeljian.github.io/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</link>
+      <link>http://Michaeljian.top/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</link>
       <pubDate>Sat, 15 Sep 2018 15:19:44 +0000</pubDate>
       
-      <guid>http://Michaeljian.github.io/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</guid>
+      <guid>http://Michaeljian.top/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</guid>
       <description>&lt;p&gt;这道题是把操作系统和Java集合类联系起来的一道题目，是非常值得研究的一道题目。（思考点：缓存的算法设计和需要缓存的数据是以什么样的数据格式存放在那种数据结构中，这种数据结构可以有效的实现缓存的作用。）&lt;/p&gt;</description>
     </item>
     
