@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>图的BFS和DFS - Michaeljian</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Michaeljian" /><meta name="description" content="图的遍历对于图这类题目来说非常重要，但是图的实现又非常的难。在这里我介绍下图的广度优先遍历和深度优先遍历，讲一下其中的算法思想。
+" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.1 with theme even" />
+
+
+<link rel="canonical" href="http://Michaeljian.github.io/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="图的BFS和DFS" />
+<meta property="og:description" content="图的遍历对于图这类题目来说非常重要，但是图的实现又非常的难。在这里我介绍下图的广度优先遍历和深度优先遍历，讲一下其中的算法思想。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://Michaeljian.github.io/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/" />
+<meta property="article:published_time" content="2018-08-19T09:59:59+00:00" />
+<meta property="article:modified_time" content="2018-08-19T09:59:59+00:00" />
+<meta itemprop="name" content="图的BFS和DFS">
+<meta itemprop="description" content="图的遍历对于图这类题目来说非常重要，但是图的实现又非常的难。在这里我介绍下图的广度优先遍历和深度优先遍历，讲一下其中的算法思想。">
+<meta itemprop="datePublished" content="2018-08-19T09:59:59+00:00" />
+<meta itemprop="dateModified" content="2018-08-19T09:59:59+00:00" />
+<meta itemprop="wordCount" content="1753">
+
+
+
+<meta itemprop="keywords" content="BFS,DFS," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="图的BFS和DFS"/>
+<meta name="twitter:description" content="图的遍历对于图这类题目来说非常重要，但是图的实现又非常的难。在这里我介绍下图的广度优先遍历和深度优先遍历，讲一下其中的算法思想。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Michaeljian</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Michaeljian</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">图的BFS和DFS</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-08-19 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%AE%97%E6%B3%95/"> 算法 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1图的存储结构">1.图的存储结构</a></li>
+            <li><a href="#2广度优先遍历breadth-first-searchbfs">2.广度优先遍历（Breadth-First-Search，BFS）</a></li>
+            <li><a href="#3深度优先遍历depath-first-searchdfs">3.深度优先遍历（Depath-First-Search，DFS）</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>图的遍历对于图这类题目来说非常重要，但是图的实现又非常的难。在这里我介绍下图的广度优先遍历和深度优先遍历，讲一下其中的算法思想。</p>
+<h3 id="1图的存储结构">1.图的存储结构</h3>
+<p>邻接矩阵表示：</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8s2f27kasj30qk0gtjsn.jpg" alt="DA2A674FD8873E6A42FFC1BCE0DFCD26.jpg"></p>
+<p>图的邻接矩阵存储结构定义如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">    <span class="kt">int</span> <span class="n">n</span><span class="o">;</span>
+    <span class="kt">boolean</span><span class="o">[][]</span> <span class="n">a</span><span class="o">;</span>
+    <span class="n">Node</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">n</span><span class="o">=</span><span class="n">n</span><span class="o">;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="n">n</span><span class="o">][</span><span class="n">n</span><span class="o">];</span>
+    <span class="o">}</span>
+    <span class="kt">void</span> <span class="nf">addEdge</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">a</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kt">void</span> <span class="nf">removeEdge</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">a</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kt">boolean</span> <span class="nf">hasEdge</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">a</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">];</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>邻接矩阵表示法的时间复杂度为O(n^2)，空间复杂度也是O(n^2)。n代表图中顶点的个数。</p>
+</blockquote>
+<p>邻接表表示：</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8s2f68oxtj30oo0jggmy.jpg" alt="BA4F709248944B0E15982967F382428A.jpg"></p>
+<p>图的邻接表存储结构定义如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">   <span class="c1">//顶点的数量
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">V</span><span class="o">;</span>
+    <span class="c1">//邻接表-数组类型的链表
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">adj</span><span class="o">[];</span>
+
+    <span class="c1">//构造一个图
+</span><span class="c1"></span>    <span class="n">DepthFirstSearch</span><span class="o">(</span><span class="kt">int</span>  <span class="n">v</span><span class="o">){</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">v</span><span class="o">;</span>
+        <span class="c1">//数组链表
+</span><span class="c1"></span>        <span class="n">adj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">[</span><span class="n">v</span><span class="o">];</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">adj</span><span class="o">[</span><span class="n">i</span><span class="o">]=</span><span class="k">new</span> <span class="n">LinkedList</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">//加入与顶点v相连的边v-w
+</span><span class="c1"></span>    <span class="kt">void</span> <span class="nf">addEdge</span><span class="o">(</span><span class="kt">int</span> <span class="n">v</span><span class="o">,</span><span class="kt">int</span> <span class="n">w</span><span class="o">){</span>
+        <span class="n">adj</span><span class="o">[</span><span class="n">v</span><span class="o">].</span><span class="na">add</span><span class="o">(</span><span class="n">w</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>时间复杂度为：O（V + E）其中V是图中顶点的数量，E是图中边的数量 。</p>
+</blockquote>
+<p>还是看以前的书比较有亲和感！</p>
+<h3 id="2广度优先遍历breadth-first-searchbfs">2.广度优先遍历（Breadth-First-Search，BFS）</h3>
+<p>广度优先遍历类似与二叉树的层序遍历。它是一种分层的查找过程，每向前走一步能访问一批顶点，不像深度优先遍历那样有往回退的情况，因此它不是一个递归的算法。<strong>为了实现逐层的访问，算法必须借助一个辅助队列，以记忆正在访问顶点的下一层顶点。</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.zhoujian.solutions.dataStructure.graph</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+<span class="cm">/**
+</span><span class="cm"> * @author zhoujian123@hotmail.com 2018/4/26 10:28
+</span><span class="cm"> * 图的广度优先遍历----借助队列
+</span><span class="cm"> * 广度优先遍历类似于二叉树的层序遍历
+</span><span class="cm"> * 图是用邻接表来存储（对于稀疏图来说，邻接表比较合适）
+</span><span class="cm"> * 时间复杂度：O(V+E)，其中V是图中顶点的数量，E是图中边的数量
+</span><span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BreadthFirstSerch</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">V</span><span class="o">;</span> <span class="c1">//顶点
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">adj</span><span class="o">[];</span> <span class="c1">//领接表
+</span><span class="c1"></span>    <span class="c1">//构造器，利用链表。v是顶点的个数
+</span><span class="c1"></span>    <span class="n">BreadthFirstSerch</span><span class="o">(</span><span class="kt">int</span> <span class="n">v</span><span class="o">){</span>
+        <span class="n">V</span><span class="o">=</span><span class="n">v</span><span class="o">;</span>
+        <span class="n">adj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">[</span><span class="n">v</span><span class="o">];</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="n">v</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">adj</span><span class="o">[</span><span class="n">i</span><span class="o">]=</span><span class="k">new</span> <span class="n">LinkedList</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="c1">//加入一条边到图中
+</span><span class="c1"></span>    <span class="kt">void</span> <span class="nf">addEdge</span><span class="o">(</span><span class="kt">int</span> <span class="n">v</span><span class="o">,</span><span class="kt">int</span> <span class="n">w</span><span class="o">){</span>
+        <span class="n">adj</span><span class="o">[</span><span class="n">v</span><span class="o">].</span><span class="na">add</span><span class="o">(</span><span class="n">w</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="c1">//从给定的顶点开始遍历
+</span><span class="c1"></span>    <span class="kt">void</span> <span class="nf">BFS</span><span class="o">(</span><span class="kt">int</span> <span class="n">s</span><span class="o">){</span>
+        <span class="c1">//默认将所有的顶点设置为未被访问（false）
+</span><span class="c1"></span>        <span class="kt">boolean</span> <span class="n">visited</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="n">V</span><span class="o">];</span>
+        <span class="c1">//创建一个队列
+</span><span class="c1"></span>        <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">queue</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+        <span class="c1">//把当前顶点设置为已访问并且入队
+</span><span class="c1"></span>        <span class="n">visited</span><span class="o">[</span><span class="n">s</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">queue</span><span class="o">.</span><span class="na">size</span><span class="o">()!=</span><span class="n">0</span><span class="o">){</span>
+            <span class="c1">//出队并打印出来
+</span><span class="c1"></span>            <span class="n">s</span><span class="o">=</span><span class="n">queue</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">+</span><span class="s">&#34;&#34;</span><span class="o">);</span>
+            <span class="c1">//获取与s相关联的全部的顶点，如果邻接的点未被访问，则设置为已被访问且入队
+</span><span class="c1"></span>            <span class="c1">//i是一种list列表的迭代器，用于存储相邻节点的列表
+</span><span class="c1"></span>            <span class="n">ListIterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">i</span> <span class="o">=</span> <span class="n">adj</span><span class="o">[</span><span class="n">s</span><span class="o">].</span><span class="na">listIterator</span><span class="o">();</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
+                <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+                <span class="k">if</span> <span class="o">(!</span><span class="n">visited</span><span class="o">[</span><span class="n">n</span><span class="o">]){</span>
+                    <span class="n">visited</span><span class="o">[</span><span class="n">n</span><span class="o">]=</span><span class="kc">true</span><span class="o">;</span>
+                    <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">n</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">BreadthFirstSerch</span> <span class="n">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BreadthFirstSerch</span><span class="o">(</span><span class="n">4</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">0</span><span class="o">,</span><span class="n">1</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">0</span><span class="o">,</span><span class="n">2</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">1</span><span class="o">,</span><span class="n">2</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">2</span><span class="o">,</span><span class="n">0</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">2</span><span class="o">,</span><span class="n">3</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">3</span><span class="o">,</span><span class="n">3</span><span class="o">);</span>
+        <span class="c1">//这个函数只能从指定顶点开始遍历。要是打印所有顶点，可以需要修改BFS函数，逐个从所有节点开始遍历
+</span><span class="c1"></span>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;广度优先遍历从0开始遍历&#34;</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">BFS</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;广度优先遍历从1开始遍历&#34;</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">BFS</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;广度优先遍历从2开始遍历&#34;</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">BFS</span><span class="o">(</span><span class="n">2</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;广度优先遍历从3开始遍历&#34;</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">BFS</span><span class="o">(</span><span class="n">3</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8s2fd4i1jj30hx09aa9w.jpg" alt="image.png"></p>
+<h3 id="3深度优先遍历depath-first-searchdfs">3.深度优先遍历（Depath-First-Search，DFS）</h3>
+<p>深度优先遍历类似于树的先序遍历。DFS算法是一个递归的算法，需要借助一个递归的工作栈，故它的空间复杂度为O(V)。总的时间复杂度为O(V+E)。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.zhoujian.solutions.dataStructure.graph</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Iterator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.LinkedList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ListIterator</span><span class="o">;</span>
+<span class="cm">/**
+</span><span class="cm"> * @author zhoujian123@hotmail.com 2018/4/25 21:19
+</span><span class="cm"> * 图的深度优先遍历：需要借助栈
+</span><span class="cm"> * 深度优先遍历类似于二叉树的先序遍历
+</span><span class="cm"> * 使用邻接表表示
+</span><span class="cm"> * 时间复杂度：当以领接表表示时，查找所有顶点的邻接点所需为O(V)，然后每条边至少访问一次所需时间为O(E),
+</span><span class="cm"> * 总的时间复杂度为O(V+E)
+</span><span class="cm"> *
+</span><span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DepthFirstSearch</span> <span class="o">{</span>
+
+    <span class="c1">//顶点的数量
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">V</span><span class="o">;</span>
+    <span class="c1">//邻接表-数组类型的链表
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">adj</span><span class="o">[];</span>
+
+    <span class="c1">//构造一个图
+</span><span class="c1"></span>    <span class="n">DepthFirstSearch</span><span class="o">(</span><span class="kt">int</span>  <span class="n">v</span><span class="o">){</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">v</span><span class="o">;</span>
+        <span class="c1">//数组链表
+</span><span class="c1"></span>        <span class="n">adj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">[</span><span class="n">v</span><span class="o">];</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">adj</span><span class="o">[</span><span class="n">i</span><span class="o">]=</span><span class="k">new</span> <span class="n">LinkedList</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">//加入与顶点v相连的边v-w
+</span><span class="c1"></span>    <span class="kt">void</span> <span class="nf">addEdge</span><span class="o">(</span><span class="kt">int</span> <span class="n">v</span><span class="o">,</span><span class="kt">int</span> <span class="n">w</span><span class="o">){</span>
+        <span class="n">adj</span><span class="o">[</span><span class="n">v</span><span class="o">].</span><span class="na">add</span><span class="o">(</span><span class="n">w</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+</span><span class="cm">     * 从顶点v开始深度遍历
+</span><span class="cm">     * @param v 顶点v
+</span><span class="cm">     * @param visited 访问标识符
+</span><span class="cm">     */</span>
+    <span class="kt">void</span> <span class="nf">DFSUtil</span><span class="o">(</span><span class="kt">int</span> <span class="n">v</span><span class="o">,</span><span class="kt">boolean</span> <span class="n">visited</span><span class="o">[]){</span>
+
+        <span class="c1">//把当前节点设置为被访问并打印出来
+</span><span class="c1"></span>        <span class="n">visited</span><span class="o">[</span><span class="n">v</span><span class="o">]=</span><span class="kc">true</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">v</span><span class="o">+</span><span class="s">&#34; &#34;</span><span class="o">);</span>
+
+        <span class="n">ListIterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">i</span> <span class="o">=</span> <span class="n">adj</span><span class="o">[</span><span class="n">v</span><span class="o">].</span><span class="na">listIterator</span><span class="o">();</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()){</span>
+            <span class="c1">//返回与v相邻的节点
+</span><span class="c1"></span>            <span class="n">Integer</span> <span class="n">n</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="n">visited</span><span class="o">[</span><span class="n">n</span><span class="o">]){</span>
+                <span class="n">DFSUtil</span><span class="o">(</span><span class="n">n</span><span class="o">,</span><span class="n">visited</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">DFS</span><span class="o">(</span><span class="kt">int</span> <span class="n">v</span><span class="o">){</span>
+        <span class="c1">//初始化所有顶点并默认为false（数组）
+</span><span class="c1"></span>        <span class="kt">boolean</span><span class="o">[]</span> <span class="n">visited</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="n">V</span><span class="o">];</span>
+        <span class="n">DFSUtil</span><span class="o">(</span><span class="n">v</span><span class="o">,</span><span class="n">visited</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">DepthFirstSearch</span> <span class="n">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DepthFirstSearch</span><span class="o">(</span><span class="n">4</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">0</span><span class="o">,</span><span class="n">1</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">0</span><span class="o">,</span><span class="n">2</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">1</span><span class="o">,</span><span class="n">2</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">2</span><span class="o">,</span><span class="n">0</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">2</span><span class="o">,</span><span class="n">3</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">addEdge</span><span class="o">(</span><span class="n">3</span><span class="o">,</span><span class="n">3</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;深度优先遍历从顶点2开始&#34;</span><span class="o">);</span>
+        <span class="n">g</span><span class="o">.</span><span class="na">DFS</span><span class="o">(</span><span class="n">2</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8s2fgyo59j30db0573yb.jpg" alt="image.png"></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Michaeljian</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-08-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/bfs/">BFS</a>
+          <a href="/tags/dfs/">DFS</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">最长上升子序列</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/">
+            <span class="next-text nav-default">跳跃游戏</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="zhoujian123@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.jianshu.com/u/0e1ea8a72008" class="iconfont icon-jianshu" title="jianshu"></a>
+      <a href="https://juejin.cn/user/2541726611803182" class="iconfont icon-juejin" title="juejin"></a>
+      <a href="https://github.com/Michaeljian" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/Michaelhbjian" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="http://Michaeljian.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Michaeljian</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

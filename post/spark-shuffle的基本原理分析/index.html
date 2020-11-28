@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Spark Shuffle的基本原理分析 - Michaeljian</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Michaeljian" /><meta name="description" content="这篇主要根据官网对Shuffle的介绍做了梳理和分析，并参考下面资料中的部分内容加以理解，对英文官网上的每一句话应该细细体味，目前的能力还有欠缺，以后慢慢补。
+" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.1 with theme even" />
+
+
+<link rel="canonical" href="http://Michaeljian.github.io/post/spark-shuffle%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Spark Shuffle的基本原理分析" />
+<meta property="og:description" content="这篇主要根据官网对Shuffle的介绍做了梳理和分析，并参考下面资料中的部分内容加以理解，对英文官网上的每一句话应该细细体味，目前的能力还有欠缺，以后慢慢补。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://Michaeljian.github.io/post/spark-shuffle%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" />
+<meta property="article:published_time" content="2019-11-09T16:19:02+00:00" />
+<meta property="article:modified_time" content="2019-11-09T16:19:02+00:00" />
+<meta itemprop="name" content="Spark Shuffle的基本原理分析">
+<meta itemprop="description" content="这篇主要根据官网对Shuffle的介绍做了梳理和分析，并参考下面资料中的部分内容加以理解，对英文官网上的每一句话应该细细体味，目前的能力还有欠缺，以后慢慢补。">
+<meta itemprop="datePublished" content="2019-11-09T16:19:02+00:00" />
+<meta itemprop="dateModified" content="2019-11-09T16:19:02+00:00" />
+<meta itemprop="wordCount" content="4332">
+
+
+
+<meta itemprop="keywords" content="Spark,Shuffle," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Spark Shuffle的基本原理分析"/>
+<meta name="twitter:description" content="这篇主要根据官网对Shuffle的介绍做了梳理和分析，并参考下面资料中的部分内容加以理解，对英文官网上的每一句话应该细细体味，目前的能力还有欠缺，以后慢慢补。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Michaeljian</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Michaeljian</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Spark Shuffle的基本原理分析</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-11-09 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"> 大数据 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1shuffle-operations">1、Shuffle operations</a></li>
+            <li><a href="#2background">2、Background</a></li>
+            <li><a href="#3performance-impact">3、Performance Impact</a></li>
+            <li><a href="#4shuffle简介">4、Shuffle简介</a></li>
+            <li><a href="#5spark-shuffle的基本原理与特性">5、Spark Shuffle的基本原理与特性</a></li>
+            <li><a href="#6shuffle原理具体解释">6、Shuffle原理具体解释</a></li>
+            <li><a href="#7shuffle类型的算子">7、Shuffle类型的算子</a></li>
+            <li><a href="#8参考资料">8、参考资料</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>这篇主要根据官网对Shuffle的介绍做了梳理和分析，并参考下面资料中的部分内容加以理解，对英文官网上的每一句话应该细细体味，目前的能力还有欠缺，以后慢慢补。</p>
+<h3 id="1shuffle-operations">1、Shuffle operations</h3>
+<p>Certain operations within Spark trigger an event known as the shuffle. The shuffle is Spark’s mechanism for re-distributing data so that it’s grouped differently across partitions（以不同的分区分组）. This typically involves copying  data across executors and machines, making the shuffle a complex and costly operation.</p>
+<h3 id="2background">2、Background</h3>
+<p>To understand what happens during the shuffle we can consider the example of the <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#ReduceByLink">reduceByKey</a> operation. The reduceByKey operation generates a new RDD where all values for a single key are combined into a tuple - the key and the result of executing a reduce function against all values associated with that key.（reduceByKey操作会生成一个新的RDD，其中将单个键的所有值组合成一个元组-该键以及针对与该键关联的所有值执行reduce函数的结果） The challenge is that not all values for a single key necessarily reside on the same partition, or even the same machine, but they must be co-located to compute the result.（挑战在于，并非单个键的所有值都必须位于同一分区，甚至同一台机器上，但是必须将它们放在同一位置才能计算结果）</p>
+<p>In Spark, data is generally not distributed across partitions to be in the necessary place for a specific operation. During computations, a single task will operate on a single partition - thus, to organize all the data for a single reduceByKey reduce task to execute, Spark needs to perform an all-to-all operation. It must read from all partitions to find all the values for all keys, and then bring together values across partitions to compute the final result for each key - this is called the <strong>shuffle</strong>.（在Spark中，数据通常不会跨分区分布到特定操作所需的位置。在计算期间，单个任务将在单个分区上操作——因此，要组织单个reduceByKey reduce任务执行的所有数据，Spark需要执行all-to-all操作。它必须从所有分区中读取所有键的值，然后将各个分区的值放在一起，以计算每个键的最终结果——这称为<strong>shuffle</strong>）</p>
+<p>Although the set of elements in each partition of newly shuffled data will be deterministic, and so is the ordering of partitions themselves, the ordering of these elements is not. If one desires predictably ordered data following shuffle then it’s possible to use:（尽管新打乱的数据的每个分区中的元素集是确定的，分区本身的排序也是确定的，但是这些元素的排序是不确定的。如果一个人希望在洗牌后得到可预测的有序数据，那么就可以使用它）</p>
+<ul>
+<li>mapPartitions to sort each partition using, for example, .sorted</li>
+<li>repartitionAndSortWithinPartitions to efficiently sort partitions while simultaneously repartitioning</li>
+<li>sortBy to make a globally ordered RDD</li>
+</ul>
+<p>导致shuffle的操作主要是重新分区和合并的等算子：</p>
+<p>Operations which can cause a shuffle include <strong>repartition</strong> operations like <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#RepartitionLink">repartition</a> and <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#CoalesceLink">coalesce</a>, (可能导致shuffle的操作包括重新分区操作，如重新分区和合并)<strong>‘ByKey</strong> operations (except for counting) like <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#GroupByLink">groupByKey</a> and <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#ReduceByLink">reduceByKey</a>, and <strong>join</strong> operations like <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#CogroupLink">cogroup</a> and <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#JoinLink">join</a>.</p>
+<h3 id="3performance-impact">3、Performance Impact</h3>
+<p>The <strong>Shuffle</strong> is an expensive operation since it involves disk I/O, data serialization, and network I/O.（shuffle是一项昂贵的操作，因为它涉及磁盘输入/输出、数据序列化和网络输入/输出） To organize data for the shuffle, Spark generates sets of tasks - <em>map</em> tasks to organize the data, and a set of <em>reduce</em> tasks to aggregate it.（要为shuffle组织数据，Spark生成任务集——map任务用于组织数据，而reduce任务集用于聚合数据） This nomenclature comes from MapReduce and does not directly relate to Spark’s map and reduce operations.（这个术语来自MapReduce，但是与Spark的map和reduce操作没有直接关系）</p>
+<p>Internally, results from individual map tasks are kept in memory until they can’t fit.（在内部，来自单个map任务的结果被保存在内存中，直到它们不能匹配为止） Then, these are sorted based on the target partition and written to a single file. On the reduce side, tasks read the relevant sorted blocks.（然后，根据目标分区对这些分区进行排序并写入到单个文件中。在reduce端，任务读取相关的已排序块。）</p>
+<p>Certain shuffle operations can consume significant amounts of heap memory since they employ in-memory data structures to organize records before or after transferring them.（某些shuffle操作会消耗大量堆内存，因为它们使用内存中的数据结构来组织传输之前或之后的记录） Specifically, reduceByKey and aggregateByKey create these structures on the map side, and &lsquo;ByKey operations generate these on the reduce side（具体来说，reduceByKey和aggregateByKey在map端创建这些结构，而ByKey操作在reduce端生成这些结构。）. When data does not fit in memory Spark will spill these tables to disk, incurring the additional overhead of disk I/O and increased garbage collection.（当数据不适合内存时，Spark会将这些表输出到磁盘上，从而产生磁盘I / O的额外开销并增加垃圾回收。）</p>
+<p>Shuffle also generates a large number of intermediate files on disk.（Shuffle还会在磁盘上生成大量的中间文件） As of Spark 1.3, these files are preserved until the corresponding RDDs are no longer used and are garbage collected.（从Spark 1.3开始，这些文件将一直保留到不再使用相应的RDDs并进行垃圾收集） This is done so the shuffle files don’t need to be re-created if the lineage is re-computed.（这样做是为了在重新计算沿袭时不需要重新创建shuffle文件） Garbage collection may happen only after a long period of time, if the application retains references to these RDDs or if GC does not kick in frequently.（如果应用程序保留了对这些RDD的引用，或者如果GC不经常启动，则垃圾收集可能仅在很长一段时间后才会发生。） This means that long-running Spark jobs may consume a large amount of disk space.（这意味着长时间运行的Spark作业可能会占用大量磁盘空间） The temporary storage directory is specified by the spark.local.dir configuration parameter when configuring the Spark context.（临时存储目录由spark.local指定。配置SparkContext的dir配置参数）</p>
+<p>Shuffle behavior can be tuned by adjusting a variety of configuration parameters.（可以通过调整各种配置参数来调整shuffle行为） See the ‘Shuffle Behavior’ section within the <a href="https://spark.apache.org/docs/latest/configuration.html">Spark Configuration Guide</a>.</p>
+<h3 id="4shuffle简介">4、Shuffle简介</h3>
+<p>Spark在DAG调度阶段会将一个Job划分为多个Stage，上游Stage做map工作，下游Stage做reduce工作，其本质上还是MapReduce计算框架。Shuffle是连接map和reduce之间的桥梁，它将map的输出对应到reduce输入中，这期间涉及到序列化反序列化、跨节点网络IO以及磁盘读写IO等，所以说Shuffle是整个应用程序运行过程中非常昂贵的一个阶段，理解Spark Shuffle原理有助于优化Spark应用程序。</p>
+<h3 id="5spark-shuffle的基本原理与特性">5、Spark Shuffle的基本原理与特性</h3>
+<p>与MapReduce计算框架一样，Spark的Shuffle实现大致如下图所示，在DAG阶段以shuffle为界，划分stage，上游stage做map task，每个map task将计算结果数据分成多份，每一份对应到下游stage的每个partition中，并将其临时写到磁盘，该过程叫做shuffle write；下游stage做reduce task，每个reduce task通过网络拉取（fetch）上游stage中所有map task的指定分区结果数据，该过程叫做shuffle read，最后完成reduce的业务逻辑。举个栗子：</p>
+<ul>
+<li>假如上游stage有100个map task，下游stage有1000个reduce task，那么这100个map task中每个map task都会得到1000份数据，而1000个reduce task中的每个reduce task都会拉取上游100个map task对应的那份数据，即第一个reduce task会拉取所有map task结果数据的第一份，以此类推。</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8ruojg6cvj30tg0hutnd.jpg" alt="shuffle的基本原理"></p>
+<p>在map阶段，除了map的业务逻辑外，还有shuffle write的过程，这个过程涉及到序列化、磁盘IO等耗时操作；在reduce阶段，除了reduce的业务逻辑外，还有前面shuffle read过程，这个过程涉及到网络IO、反序列化等耗时操作。所以整个shuffle过程是极其昂贵的，spark在shuffle的实现上也做了很多优化改进，随着版本的迭代发布，spark shuffle的实现也逐步得到改进。</p>
+<h3 id="6shuffle原理具体解释">6、Shuffle原理具体解释</h3>
+<p><strong>6.1、shuffle原理</strong></p>
+<p>概述：Shuffle描述着数据从map task输出到reduce task输入的这段过程。在分布式情况下，reduce task需要跨节点去拉取其它节点上的map task结果。这一过程将会产生网络资源消耗和内存，磁盘IO的消耗。</p>
+<p><strong>6.2、mapreduce的shuffle原理</strong></p>
+<ul>
+<li>map task端操作</li>
+</ul>
+<p>　　每个map task都有一个内存缓冲区（默认是100MB），存储着map的输出结果，当缓冲区快满的时候需要将缓冲区的数据以一个临时文件的方式存放到磁盘，当整个map task结束后再对磁盘中这个map task产生的所有临时文件做合并，生成最终的正式输出文件，然后等待reduce task来拉数据。</p>
+<p>　　 Spill过程：这个从内存往磁盘写数据的过程被称为Spill，中文可译为溢写。整个缓冲区有个溢写的比例spill.percent（默认是0.8），当达到阀值时map task 可以继续往剩余的memory写，同时溢写线程锁定已用memory，先对key(序列化的字节)做排序,如果client程序设置了Combiner，那么在溢写的过程中就会进行局部聚合。</p>
+<p>　　Merge过程：每次溢写都会生成一个临时文件，在map task真正完成时会将这些文件归并成一个文件，这个过程叫做Merge。</p>
+<ul>
+<li>reduce task端操作</li>
+</ul>
+<p>　　当某台TaskTracker上的所有map task执行完成，对应节点的reduce task开始启动，简单地说，此阶段就是不断地拉取(Fetcher)每个map task所在节点的最终结果，然后不断地做merge形成reduce task的输入文件。</p>
+<p>　     Copy过程：Reduce进程启动一些数据copy线程(Fetcher)通过HTTP协议拉取TaskTracker的map阶段输出文件</p>
+<p>　     Merge过程：Copy过来的数据会先放入内存缓冲区（基于JVM的heap size设置），如果内存缓冲区不足也会发生map task的spill（sort 默认,combine 可选），多个溢写文件时会发生map task的merge。</p>
+<p>下面总结下mapreduce的关键词：</p>
+<p>　　存储相关的有：<code>内存缓冲区</code>，<code>默认大小</code>，<code>溢写阀值</code></p>
+<p>　　主要过程：<code>溢写（spill）</code>，排序，<code>合并（combine）</code>，<code>归并（Merge）</code>，<code>Copy</code>或<code>Fetch</code></p>
+<p>　　相关参数：<code>内存缓冲区默认大小</code>，<code>JVM heap size</code>，<code>spill.percent</code></p>
+<ul>
+<li>关于排序方法：</li>
+</ul>
+<p>　	在Map阶段，k-v溢写时，采用的正是快排；而溢出文件的合并使用的则是归并；在Reduce阶段，通过shuffle从Map获取的文件进行合并的时候采用的也是归并；最后阶段则使用了堆排作最后的合并过程。</p>
+<h3 id="7shuffle类型的算子">7、Shuffle类型的算子</h3>
+<p><strong>7.1、去重：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">distinct</span><span class="o">()</span>
+<span class="k">def</span> <span class="n">distinct</span><span class="o">(</span><span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>7.2、 聚合</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">reduceByKey</span><span class="o">(</span><span class="n">func</span><span class="k">:</span> <span class="o">(</span><span class="kt">V</span><span class="o">,</span> <span class="kt">V</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">V</span><span class="o">,</span> <span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">)]</span>
+<span class="k">def</span> <span class="n">reduceByKey</span><span class="o">(</span><span class="n">partitioner</span><span class="k">:</span> <span class="kt">Partitioner</span><span class="o">,</span> <span class="n">func</span><span class="k">:</span> <span class="o">(</span><span class="kt">V</span><span class="o">,</span> <span class="kt">V</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">V</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">)]</span>
+<span class="k">def</span> <span class="n">groupBy</span><span class="o">[</span><span class="kt">K</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=&gt;</span> <span class="n">K</span><span class="o">,</span> <span class="n">p</span><span class="k">:</span> <span class="kt">Partitioner</span><span class="o">)</span><span class="k">:</span><span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">Iterable</span><span class="o">[</span><span class="kt">V</span><span class="o">])]</span>
+<span class="k">def</span> <span class="n">groupByKey</span><span class="o">(</span><span class="n">partitioner</span><span class="k">:</span> <span class="kt">Partitioner</span><span class="o">)</span><span class="k">:</span><span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">Iterable</span><span class="o">[</span><span class="kt">V</span><span class="o">])]</span>
+<span class="k">def</span> <span class="n">aggregateByKey</span><span class="o">[</span><span class="kt">U:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="n">zeroValue</span><span class="k">:</span> <span class="kt">U</span><span class="o">,</span> <span class="n">partitioner</span><span class="k">:</span> <span class="kt">Partitioner</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">U</span><span class="o">)]</span>
+<span class="k">def</span> <span class="n">aggregateByKey</span><span class="o">[</span><span class="kt">U:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="n">zeroValue</span><span class="k">:</span> <span class="kt">U</span><span class="o">,</span> <span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">U</span><span class="o">)]</span>
+<span class="k">def</span> <span class="n">combineByKey</span><span class="o">[</span><span class="kt">C</span><span class="o">](</span><span class="n">createCombiner</span><span class="k">:</span> <span class="kt">V</span> <span class="o">=&gt;</span> <span class="n">C</span><span class="o">,</span> <span class="n">mergeValue</span><span class="k">:</span> <span class="o">(</span><span class="kt">C</span><span class="o">,</span> <span class="kt">V</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">,</span> <span class="n">mergeCombiners</span><span class="k">:</span> <span class="o">(</span><span class="kt">C</span><span class="o">,</span> <span class="kt">C</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">C</span><span class="o">)]</span>
+<span class="k">def</span> <span class="n">combineByKey</span><span class="o">[</span><span class="kt">C</span><span class="o">](</span><span class="n">createCombiner</span><span class="k">:</span> <span class="kt">V</span> <span class="o">=&gt;</span> <span class="n">C</span><span class="o">,</span> <span class="n">mergeValue</span><span class="k">:</span> <span class="o">(</span><span class="kt">C</span><span class="o">,</span> <span class="kt">V</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">,</span> <span class="n">mergeCombiners</span><span class="k">:</span> <span class="o">(</span><span class="kt">C</span><span class="o">,</span> <span class="kt">C</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">,</span> <span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">C</span><span class="o">)]</span>
+<span class="k">def</span> <span class="n">combineByKey</span><span class="o">[</span><span class="kt">C</span><span class="o">](</span><span class="n">createCombiner</span><span class="k">:</span> <span class="kt">V</span> <span class="o">=&gt;</span> <span class="n">C</span><span class="o">,</span> <span class="n">mergeValue</span><span class="k">:</span> <span class="o">(</span><span class="kt">C</span><span class="o">,</span> <span class="kt">V</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">,</span> <span class="n">mergeCombiners</span><span class="k">:</span> <span class="o">(</span><span class="kt">C</span><span class="o">,</span> <span class="kt">C</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">,</span> <span class="n">partitioner</span><span class="k">:</span> <span class="kt">Partitioner</span><span class="o">,</span> <span class="n">mapSideCombine</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">serializer</span><span class="k">:</span> <span class="kt">Serializer</span> <span class="o">=</span> <span class="kc">null</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">C</span><span class="o">)]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>7.3、排序</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">sortByKey</span><span class="o">(</span><span class="n">ascending</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">self</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">length</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">)]</span>
+<span class="k">def</span> <span class="n">sortBy</span><span class="o">[</span><span class="kt">K</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">T</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">K</span><span class="o">,</span> <span class="n">ascending</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">length</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">K</span><span class="o">],</span> <span class="n">ctag</span><span class="k">:</span> <span class="kt">ClassTag</span><span class="o">[</span><span class="kt">K</span><span class="o">])</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>7.4、重分区</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">coalesce</span><span class="o">(</span><span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">shuffle</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span> <span class="n">partitionCoalescer</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">PartitionCoalescer</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Option</span><span class="o">.</span><span class="n">empty</span><span class="o">)</span>
+<span class="k">def</span> <span class="n">repartition</span><span class="o">(</span><span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="k">=</span> <span class="kc">null</span><span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>7.5、集合或者表操作</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">intersection</span><span class="o">(</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">def</span> <span class="n">intersection</span><span class="o">(</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">partitioner</span><span class="k">:</span> <span class="kt">Partitioner</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="k">=</span> <span class="kc">null</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">def</span> <span class="n">intersection</span><span class="o">(</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">def</span> <span class="n">subtract</span><span class="o">(</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">def</span> <span class="n">subtract</span><span class="o">(</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span> <span class="n">p</span><span class="k">:</span> <span class="kt">Partitioner</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="k">=</span> <span class="kc">null</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">def</span> <span class="n">subtractByKey</span><span class="o">[</span><span class="kt">W:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">W</span><span class="o">)])</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">)]</span>
+<span class="k">def</span> <span class="n">subtractByKey</span><span class="o">[</span><span class="kt">W:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">W</span><span class="o">)],</span> <span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">)]</span>
+<span class="k">def</span> <span class="n">subtractByKey</span><span class="o">[</span><span class="kt">W:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">W</span><span class="o">)],</span> <span class="n">p</span><span class="k">:</span> <span class="kt">Partitioner</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">V</span><span class="o">)]</span>
+<span class="k">def</span> <span class="n">join</span><span class="o">[</span><span class="kt">W</span><span class="o">](</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">W</span><span class="o">)],</span> <span class="n">partitioner</span><span class="k">:</span> <span class="kt">Partitioner</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="o">(</span><span class="kt">V</span>, <span class="kt">W</span><span class="o">))]</span>
+<span class="k">def</span> <span class="n">join</span><span class="o">[</span><span class="kt">W</span><span class="o">](</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">W</span><span class="o">)])</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="o">(</span><span class="kt">V</span>, <span class="kt">W</span><span class="o">))]</span>
+<span class="k">def</span> <span class="n">join</span><span class="o">[</span><span class="kt">W</span><span class="o">](</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">W</span><span class="o">)],</span> <span class="n">numPartitions</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="o">(</span><span class="kt">V</span>, <span class="kt">W</span><span class="o">))]</span>
+<span class="k">def</span> <span class="n">leftOuterJoin</span><span class="o">[</span><span class="kt">W</span><span class="o">](</span><span class="n">other</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="kt">W</span><span class="o">)])</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">K</span>, <span class="o">(</span><span class="kt">V</span>, <span class="kt">Option</span><span class="o">[</span><span class="kt">W</span><span class="o">]))]</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="8参考资料">8、参考资料</h3>
+<p><a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html">https://spark.apache.org/docs/latest/rdd-programming-guide.html</a></p>
+<p><a href="https://www.slideshare.net/colorant/spark-shuffle-introduction?from_action=save">https://www.slideshare.net/colorant/spark-shuffle-introduction?from_action=save</a></p>
+<p><a href="https://www.cnblogs.com/arachis/p/Spark_Shuffle.html">https://www.cnblogs.com/arachis/p/Spark_Shuffle.html</a></p>
+<p><a href="http://sharkdtu.com/posts/spark-shuffle.html">http://sharkdtu.com/posts/spark-shuffle.html</a></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Michaeljian</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-11-09
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/spark/">Spark</a>
+          <a href="/tags/shuffle/">Shuffle</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E8%BD%ACmysql%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%E9%87%8D%E7%82%B9/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">转MySQL设计规范（重点）</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/python%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+            <span class="next-text nav-default">Python的基本数据结构</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="zhoujian123@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.jianshu.com/u/0e1ea8a72008" class="iconfont icon-jianshu" title="jianshu"></a>
+      <a href="https://juejin.cn/user/2541726611803182" class="iconfont icon-juejin" title="juejin"></a>
+      <a href="https://github.com/Michaeljian" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/Michaelhbjian" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="http://Michaeljian.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Michaeljian</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>深入浅出MySQL之开发篇（一） - Michaeljian</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Michaeljian" /><meta name="description" content="数据库的基础知识介绍完了，下面介绍的是在开发过程要需要注意的知识点，这样对提高数据库的性能十分重要！
+" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.1 with theme even" />
+
+
+<link rel="canonical" href="http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%B8%80/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="深入浅出MySQL之开发篇（一）" />
+<meta property="og:description" content="数据库的基础知识介绍完了，下面介绍的是在开发过程要需要注意的知识点，这样对提高数据库的性能十分重要！" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%B8%80/" />
+<meta property="article:published_time" content="2018-02-16T17:24:11+00:00" />
+<meta property="article:modified_time" content="2018-02-16T17:24:11+00:00" />
+<meta itemprop="name" content="深入浅出MySQL之开发篇（一）">
+<meta itemprop="description" content="数据库的基础知识介绍完了，下面介绍的是在开发过程要需要注意的知识点，这样对提高数据库的性能十分重要！">
+<meta itemprop="datePublished" content="2018-02-16T17:24:11+00:00" />
+<meta itemprop="dateModified" content="2018-02-16T17:24:11+00:00" />
+<meta itemprop="wordCount" content="4411">
+
+
+
+<meta itemprop="keywords" content="数据库,MySQL," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="深入浅出MySQL之开发篇（一）"/>
+<meta name="twitter:description" content="数据库的基础知识介绍完了，下面介绍的是在开发过程要需要注意的知识点，这样对提高数据库的性能十分重要！"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Michaeljian</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Michaeljian</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">深入浅出MySQL之开发篇（一）</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-02-16 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"> 数据库 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1表类型存储引擎的选择">1.表类型（存储引擎）的选择</a></li>
+            <li><a href="#2选择合适的数据类型">2.选择合适的数据类型</a></li>
+            <li><a href="#3索引的设计和使用">3.索引的设计和使用</a></li>
+            <li><a href="#4视图">4.视图</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>数据库的基础知识介绍完了，下面介绍的是在开发过程要需要注意的知识点，这样对提高数据库的性能十分重要！</p>
+<h3 id="1表类型存储引擎的选择">1.表类型（存储引擎）的选择</h3>
+<h4 id="innodb">InnoDB</h4>
+<p>InnoDB存储引擎提供了具有<strong>提交、回滚和崩溃恢复能力的事务安全</strong>。但是对比与MyISAM的存储引擎，InnoDB<strong>写的处理效率</strong> 差一些，并且会占用更多地磁盘空间以保留数据和索引。</p>
+<p>InnoDB不同于其他存储引擎的表的特点：</p>
+<ul>
+<li>自动增长列：InnoDB表的自动增长列可以手工插入，但是如果是插入的值是空或者是0，则实际插入的将是自动增长后的值。通过<code>ALTER TABLE *** AUTO_INCREMENT = n</code> 语句强制设置自动增长列的初始值，默认从1开始，但是该强制的默认值是保留在内存中的，如果该值在使用之前数据库重新启动，那么该值会失效。<strong>对于InnoDB表，自动增长列是索引，如果是组合索引，也必须是组合索引的第一列</strong>。</li>
+<li>外键约束：MySQL支持外键的存储引擎只有InnoDB，在创建外键的时候，要求父表必须有对应的索引，子表在创建外键的时候也会自动创建对应的索引。</li>
+<li>存储方式：InnoDB存储表和索引有以下两种存储方式1.使用共享表空间2.使用多表空间存储（多表空间存储可以比较方便进行单表备份和恢复操作，共享表空间存储InnoDB把内部数据词典和在线重做日志放在这个文件中）</li>
+</ul>
+<h4 id="11mysql中myisam与innodb的区别至少5点">1.1MySQL中Myisam与Innodb的区别，至少5点：</h4>
+<p>一、5点不同：</p>
+<ul>
+<li>1、<code>InnoDB</code>支持事务，而<code>MyISAM</code>不支持事务。</li>
+<li>2、<code>InnoDB</code>支持行级锁，而<code>MyISAM</code>不支持行级锁。</li>
+<li>3、<code>InnoDB</code>支持MVCC，而<code>MyISAM</code>不支持。</li>
+<li>4、<code>InnoDB</code>支持外键，而<code>MyISAM</code>不支持。</li>
+<li>5、<code>InnoDB</code>不支持全文索引，而<code>MyISAM</code>支持。</li>
+</ul>
+<p>二、InnoDB引擎的4大特性</p>
+<ul>
+<li>1、插入缓冲（insert buffer)</li>
+<li>2、二次写(double write)</li>
+<li>3、自适应哈希索引(ahi)</li>
+<li>4、预读(read ahead)</li>
+</ul>
+<p>三、、2者<code>select count(*)</code>哪个更快，为什么</p>
+<p><code>myisam</code>更快，因为<code>myisam</code>内部维护了一个计数器，可以直接调取。</p>
+<h3 id="2选择合适的数据类型">2.选择合适的数据类型</h3>
+<p>在项目中创建一个表时，需要为各个属性值定义数据类型，通常我们很少考虑到如何选择合适的数据类型，导致查询的速度慢的问题，下面介绍不同数据类型的差别。</p>
+<h4 id="char与varchar">CHAR与VARCHAR</h4>
+<p><code>char</code>和<code>varchar</code>类型相似，都是用来存储字符串的，但是它们<strong>保存</strong>和<strong>检索的方式</strong>不同。<code>char</code>属于固定长度的字符类型，<code>varchar</code>是属于可变长度的字符类型。</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>char(4)</th>
+<th>存储需求</th>
+<th>varchar(4)</th>
+<th>存储需求（非严格模式）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>''</td>
+<td>'    '</td>
+<td>4个字节</td>
+<td>''</td>
+<td>1个字节</td>
+</tr>
+<tr>
+<td>&lsquo;ab&rsquo;</td>
+<td>&lsquo;ab  '</td>
+<td>4个字节</td>
+<td>&lsquo;ab&rsquo;</td>
+<td>3个字节</td>
+</tr>
+<tr>
+<td>&lsquo;abcd&rsquo;</td>
+<td>&lsquo;abcd&rsquo;</td>
+<td>4个字节</td>
+<td>&lsquo;abcd&rsquo;</td>
+<td>5个字节</td>
+</tr>
+<tr>
+<td>&lsquo;abcdefgh&rsquo;</td>
+<td>&lsquo;abcd&rsquo;</td>
+<td>4个字节</td>
+<td>&lsquo;abcd&rsquo;</td>
+<td>5个字节</td>
+</tr>
+</tbody>
+</table>
+<p>总结：固定长度使用char比较好，缺点是浪费存储空间，但是总的来说，char的平均占用时间多余varchar，一般是使用varchar。</p>
+<h4 id="text与blob">TEXT与BLOB</h4>
+<p>一般在保存<strong>少量的字符串</strong>的时候，我们会选择使用char或者varchar；而在保存<strong>较大文本</strong>是，通常会选择使用text或者blob。二者之间的差别是blob能用来保存二进制数据，比如照片；而text只能保存字符数据，比如一篇文章或者日记。</p>
+<p>常见问题分析：</p>
+<ul>
+<li>blob和text值会引起一些性能问题，特别是在执行了大量的删除操作时。删除操作会在数据表中留下很大的空洞，以后填入这些空洞的记录在插入的性能会有影响。为了提高性能，建议定期使用optimize table功能对这类表进行碎片整理。</li>
+<li>可以使用合成的（Synthetic）索引来提高大文本字段的查询性能。（简单的来说，合成索引就是根据大文本字段的内容建立一个散列值，并把这个值存储在单独的数据列中，接下来就可以通过检索散列值找到数据行了）</li>
+<li>在不必要的时候避免检索大型的blob或text值。</li>
+<li>把blob或text列分离到单独的表中。</li>
+</ul>
+<h4 id="浮点数和定点数">浮点数和定点数</h4>
+<p>浮点数一般用于表示含有小数部分的数值，而定点数实际上是以<strong>字符串</strong>形式存放的，所以定点数可以更精确的保存数据。如果实际插入的数据精度大于实际定义的精度，则MySQL会进行警告，但是数据还是按照实际精度四舍五入后插入。</p>
+<h3 id="3索引的设计和使用">3.索引的设计和使用</h3>
+<h4 id="31-什么是索引">3.1 什么是索引？</h4>
+<p>索引是对数据库表中一或多个列的值进行排序的结构，是帮助MySQL高效获取数据的数据结构。索引就是加快检索表中数据的方法。</p>
+<p>例如：这样的一个查询<code>select * from  t_measure_data where update_timestamp ='1475045438'; </code>。如果没有索引，必须遍历整个表，直到update_timestamp的这一行被找到为止；有了索引之后（必须是在update_timestamp 这一列建立的索引），即可在索引中查找。由于索引是经过某种算法优化过的，因而查找次数要少的多。可见，索引插叙的速度要比没有索引的速度要快很多。</p>
+<p>下面进行一个查询时间的对比：</p>
+<p>没有建立索引：</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8rwhb5av6j30wi06sq2s.jpg" alt="image.png"></p>
+<p>建立索引后：</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8rwtbx4qkj30xp0953ye.jpg" alt="1524901607281.png"></p>
+<p>很明显，建立索引后的查询速度是很快的。</p>
+<h4 id="32-索引的原理">3.2 索引的原理</h4>
+<p>索引(index)是帮助MySQL高效获取数据的数据结构。InnoDB存储引擎的表默认创建的是<strong>BTree索引</strong>。请看<a href="http://blog.csdn.net/ty_hf/article/details/53574713">MySQL的Btree索引原理</a></p>
+<h4 id="33-索引的类型">3.3 索引的类型</h4>
+<p>从逻辑角度，索引可以分为以下几种：</p>
+<ul>
+<li>1、普通索引：最基本的索引，它没有任何限制。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">index</span> <span class="err">索引名称</span> <span class="k">on</span> <span class="err">表名</span><span class="p">(</span><span class="err">列名</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>2、唯一索引：唯一性索引unique index和一般索引normal index最大的差异就是在索引列上增加了一层唯一约束。添加唯一性索引的数据列可以为空，但是只要存在数据值，就必须是唯一的。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">unique</span> <span class="k">index</span> <span class="err">索引名</span> <span class="k">on</span> <span class="err">表名</span><span class="p">(</span><span class="err">列名</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>3、主键索引：它是一种特殊的唯一索引，用于唯一标识数据库中的某一条记录，不允许有空值，一般使用Primary Key来约束。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="k">table</span> <span class="err">表名</span> <span class="k">add</span> <span class="k">primary</span> <span class="k">key</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>4、联合索引（复合索引）：多个字段上建立的索引，能够加速复合查询条件的检索。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">index</span> <span class="n">S_Sno_Sname</span> <span class="k">on</span> <span class="n">Student</span><span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Sname</span><span class="p">);</span>
+<span class="o">#</span><span class="err">建立这样的组合索引，其实是相当于分别建立了下面两两组合索引</span>
+<span class="o">-</span><span class="n">Sno</span><span class="p">,</span><span class="n">Sname</span>
+<span class="o">-</span><span class="n">Sno</span>
+<span class="o">#</span><span class="err">为什么没有</span><span class="n">Sname这样的组合索引</span><span class="err">？这是因为</span><span class="n">MySQL组合索引</span><span class="err">“最左匹配原则”</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>5、全文索引： MySQL 自带的全文索引只能用于数据库引擎为 <code>MyISAM </code>的数据表，新版本 MySQL 5.6 的 <code>InnoDB </code>支持全文索引。默认 MySQL不支持中文全文检索，可以通过扩展 MySQL，添加中文全文检索或为中文内容表提供一个对应的英文索引表的方式来支持中文。</li>
+</ul>
+<h4 id="34-设计索引的基本原则">3.4 设计索引的基本原则</h4>
+<p>索引的设计可以遵循一些已有的原则，创建索引的时候请尽量考虑符合这些原则，便于提高索引的使用效率，更有效的使用索引。</p>
+<ul>
+<li>
+<p>搜索的索引列，不一定是要选择的列。换句话说，最合适索引的列是出现在where字句中的列，或连接子句中指定的列，而不是出现在select关键字后的选择列表中的列。</p>
+</li>
+<li>
+<p>使用唯一列。考虑某列中值的分布，索引的列的基数越大，索引的效果越好。</p>
+</li>
+<li>
+<p>使用短索引。如果对字符串列进行索引，应该指定一个前缀长度，只要有可能就应该这样做。</p>
+</li>
+<li>
+<p><strong>利用最左前缀(组合索引)。组合索引可以更好的提高MySQL效率，最左索引遵循&quot;最左索引&quot;原则。创建符合索引时应该将最常用（频率）作限制条件的列放在最左边，依次递减</strong></p>
+</li>
+<li>
+<p>不要过度索引。每个额外的索引都要占用额外的磁盘空间，并降低些操作的性能。</p>
+</li>
+<li>
+<p>对于InnoDB存储引擎的表，记录默认会按照一定的顺序保存，如果有明确定义的主键，则按照主键顺序保存。</p>
+</li>
+</ul>
+<p>下面介绍一下建立索引的字段和时机：</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8rwtrytztj30nw099q44.jpg" alt="image"></p>
+<h4 id="创建索引">创建索引</h4>
+<p>索引在创建表的时候可以同时创建，也可以随时增加新的索引。创建新索引的语法为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="p">[</span><span class="k">unique</span><span class="err">\</span><span class="n">fulltext</span><span class="err">\</span><span class="n">spatial</span><span class="p">]</span> <span class="k">index</span> <span class="n">index_name</span> <span class="p">[</span><span class="k">using</span> <span class="n">index_type</span><span class="p">]</span> <span class="k">on</span> <span class="n">tbl_name</span><span class="p">(</span><span class="n">index_clo_name</span><span class="p">...)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8rwtzen7lj30eq04f0sj.jpg" alt="image.png"></p>
+<h4 id="修改索引">修改索引</h4>
+<p>在MySQL中并没有提供修改索引的直接指令，一般情况下，我们需要先删除掉原索引，再根据需要创建一个同名的索引，从而变相地实现修改索引操作。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">先删除</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="k">user</span> <span class="k">DROP</span> <span class="k">INDEX</span> <span class="n">idx_user_username</span><span class="p">;</span>
+<span class="o">#</span><span class="err">再修改后内容创建同名索引</span>
+<span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">idx_user_username</span> <span class="k">ON</span> <span class="k">user</span> <span class="p">(</span><span class="n">username</span><span class="p">(</span><span class="mi">8</span><span class="p">));</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="删除索引">删除索引</h4>
+<p>索引的删除语法为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">drop</span> <span class="k">index</span> <span class="n">index_name</span> <span class="k">on</span> <span class="n">tbl_name</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">想要删除</span><span class="n">Student表上的索引Stusno</span>
+<span class="k">drop</span> <span class="k">index</span> <span class="n">Stusno</span> <span class="k">on</span> <span class="n">Student</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8rwuakwwvj30bl032742.jpg" alt="image.png"></p>
+<h4 id="查看索引">查看索引</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">show</span> <span class="k">index</span> <span class="k">from</span> <span class="n">Student</span><span class="err">\</span><span class="k">G</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8rwugp7iwj30h50hawef.jpg" alt="image.png"></p>
+<h4 id="索引的优化">索引的优化</h4>
+<p>索引的好处很多，但是过多的使用索引将会造成滥用。因此索引也会有它的缺点：</p>
+<ul>
+<li>虽然索引大大提高了查询速度，同时却会降低更新表的速度，如对表进行INSERT、UPDATE和DELETE。因为更新表时，MySQL不仅要保存数据，还要保存索引文件。</li>
+<li>建立索引会占用磁盘空间的索引文件。</li>
+</ul>
+<p>了解MySQL的优化：<a href="https://juejin.im/post/5a9b6342f265da23a2289281">MySQL优化那些事儿</a></p>
+<h3 id="4视图">4.视图</h3>
+<h4 id="什么是视图">什么是视图</h4>
+<p>视图（View）是一种虚拟存在的表，对于使用视图的用户来说基本是透明的。视图并不在数据库汇总实际存在，行和列数据来自定义视图的查询中使用的表，并且是在使用视图时动态生成的。</p>
+<h4 id="视图的作用">视图的作用</h4>
+<p>从用户角度来看，一个视图是从一个特定的角度来查看数据库中的数据。从数据库系统内部来看，一个视图是由SELECT语句组成的查询定义的虚拟表。从数据库系统内部来看，视图是由一张或多张表中的数据组成的，从数据库系统外部来看，视图就如同一张表一样，对表能够进行的一般操作都可以应用于视图，例如查询，插入，修改，删除操作等。</p>
+<p><em>在经常用到的查询或者复杂的多表查询、权限限制的时候使用视图比较好</em><a href="http://blog.csdn.net/qq_35845339/article/details/78655326">什么时候使用视图</a></p>
+<p>视图相对于普通表的优势主要包括以下几点：</p>
+<ul>
+<li>简单：使用视图的用户完全不需要关心后面对应的表的结构、关联条件和筛选条件，对用户来说已经是过滤好的符合条件的结果集。</li>
+<li>安全：使用视图的用户只能访问他们被允许查询的结果集，对表的权限管理并不能限制到某个列某个行，但是通过视图就可以简单的实现。</li>
+<li>数据独立：一旦视图的结构确定了，可以屏蔽表结构变化对用户的影响，源表增加列对视图没有影响；源表修改列名，则可以通过修改视图来解决，不会造成对访问者的影响。</li>
+</ul>
+<h4 id="视图操作">视图操作</h4>
+<p>视图的操作包括创建或者修改视图、删除视图以及查看视图定义</p>
+<p><strong>创建或者修改视图</strong></p>
+<p>创建视图的语法为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="p">[</span><span class="k">or</span> <span class="k">replace</span><span class="p">][</span><span class="n">algorithm</span><span class="o">=</span><span class="err">{</span><span class="n">undefined</span><span class="err">\</span><span class="n">merge</span><span class="err">\</span><span class="n">temptable</span><span class="err">}</span><span class="p">]</span>
+<span class="k">view</span> <span class="n">view_name</span><span class="p">[(</span><span class="n">column_list</span><span class="p">)]</span>
+<span class="k">as</span> <span class="n">select_statement</span>
+<span class="p">[</span><span class="k">with</span> <span class="p">[</span><span class="k">cascaded</span><span class="err">\</span><span class="k">local</span><span class="p">]</span> <span class="k">check</span> <span class="k">option</span><span class="p">]</span>
+
+<span class="o">#</span><span class="err">对</span><span class="n">payment表创建视图</span>
+<span class="k">create</span> <span class="k">or</span> <span class="k">replace</span> <span class="k">view</span> <span class="n">payment_view</span> <span class="k">as</span> 
+<span class="k">select</span> <span class="n">payment_id</span><span class="p">,</span><span class="n">amount</span> <span class="k">from</span> <span class="n">payment</span>
+<span class="k">where</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">10</span> 
+<span class="k">with</span> <span class="k">check</span> <span class="k">option</span> 
+</code></pre></td></tr></table>
+</div>
+</div><p>修改视图的语法为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="p">[</span><span class="n">algorthm</span><span class="o">=</span><span class="err">{</span><span class="n">undefined</span><span class="err">\</span><span class="n">merge</span><span class="err">\</span><span class="n">temptable</span><span class="err">}</span><span class="p">]</span>
+<span class="k">view</span> <span class="n">view_name</span><span class="p">[(</span><span class="n">column_list</span><span class="p">)]</span>
+<span class="k">as</span> <span class="n">select_statement</span>
+<span class="p">[</span><span class="k">with</span> <span class="p">[</span><span class="k">cascaded</span><span class="err">\</span><span class="k">local</span><span class="p">]</span> <span class="k">check</span> <span class="k">option</span><span class="p">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>删除视图</strong></p>
+<p>用户可以一次删除一个或者多个视图，前提是必须有该视图的drop权限。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">drop</span> <span class="k">view</span> <span class="p">[</span><span class="k">if</span> <span class="k">exists</span><span class="p">]</span> <span class="n">view_name</span> <span class="p">[,</span><span class="n">view_name</span><span class="p">]...</span> <span class="p">[</span><span class="k">restrict</span><span class="o">|</span><span class="k">cascade</span><span class="p">]</span> 
+
+<span class="o">#</span><span class="err">删除</span><span class="n">staff_list视图</span>
+<span class="k">drop</span> <span class="k">view</span> <span class="n">staff_list</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="查看视图">查看视图</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="k">show</span> <span class="n">tables不仅显示表的名字</span><span class="err">，同时也显示视图的名字</span>
+<span class="k">show</span> <span class="n">tabels</span>
+<span class="k">show</span> <span class="n">tabels</span> <span class="n">status</span> <span class="p">[</span><span class="k">from</span> <span class="n">db_name</span><span class="p">]</span> <span class="p">[</span><span class="k">like</span> <span class="s1">&#39;pattern&#39;</span><span class="p">]</span>
+<span class="o">#</span><span class="err">查看</span><span class="n">staff_list视图信息</span>
+<span class="k">show</span> <span class="k">table</span> <span class="n">status</span> <span class="k">like</span> <span class="s1">&#39;staff_list&#39;</span> <span class="err">\</span><span class="k">G</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="更新视图">更新视图</h4>
+<p>更新视图时，可以先用drop再用create，也可以直接用create or replace view。</p>
+<p>如果视图定义中有以下操作，怎不能进行视图的更新：</p>
+<ul>
+<li>分组（使用group by和having）</li>
+<li>联结</li>
+<li>子查询</li>
+<li>并</li>
+<li>聚集函数（Min()、Count()、Sum()）等</li>
+<li>distinct</li>
+<li>导出（计算）列</li>
+</ul>
+<h4 id="理解视图的例子例386">理解视图的例子（例3.86）</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">Create</span> <span class="k">view</span> <span class="n">IS_S1</span> <span class="p">(</span><span class="n">Sno</span><span class="p">,</span><span class="n">Sname</span><span class="p">,</span><span class="n">Grade</span><span class="p">)</span>
+<span class="k">as</span>
+<span class="k">select</span> <span class="n">Student</span><span class="p">.</span><span class="n">Sno</span><span class="p">,</span><span class="n">Sname</span><span class="p">,</span><span class="n">Grade</span>
+<span class="k">from</span> <span class="n">Student</span><span class="p">,</span><span class="n">SC</span>
+<span class="k">where</span> <span class="n">Sdept</span><span class="o">=</span><span class="s1">&#39;CS&#39;</span> <span class="k">and</span> <span class="n">Student</span><span class="p">.</span><span class="n">Sno</span> <span class="o">=</span> <span class="n">SC</span><span class="p">.</span><span class="n">Sno</span> <span class="k">and</span> <span class="n">SC</span><span class="p">.</span><span class="n">Cno</span> <span class="o">=</span><span class="s1">&#39;1&#39;</span> <span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>建立信息系选修了1号课程的学生的视图（包括学号、姓名、成绩）。</p>
+<p>现在，假如可以把整个查询包装成一个名为IS_S1的虚拟表，则可以如下轻松的检索出相同得数据：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">IS_S1</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这就是视图的作用。IS_S1是一个视图，作为视图，它不包含表中应该有的任何列或数据，它包含的是一个SQL查询（与上面用以正确联结表的相同的查询）。</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8rwv60z4kj30gt05o0sj.jpg" alt="image.png"></p>
+<p><strong>视图提供了一种MySQL的select语句层次的封装，可用来简化数据处理以及重新格式化基础数据或者保护基础数据。</strong></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Michaeljian</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-02-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <a href="/tags/mysql/">MySQL</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%BA%8C/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">深入浅出MySQL之开发篇（二）</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%9F%BA%E7%A1%80%E7%AF%87/">
+            <span class="next-text nav-default">深入浅出MySQL之基础篇</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="zhoujian123@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.jianshu.com/u/0e1ea8a72008" class="iconfont icon-jianshu" title="jianshu"></a>
+      <a href="https://juejin.cn/user/2541726611803182" class="iconfont icon-juejin" title="juejin"></a>
+      <a href="https://github.com/Michaeljian" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/Michaelhbjian" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="http://Michaeljian.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Michaeljian</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

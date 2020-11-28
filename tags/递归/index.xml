@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>递归 on Michaeljian</title>
+    <link>http://Michaeljian.github.io/tags/%E9%80%92%E5%BD%92/</link>
+    <description>Recent content in 递归 on Michaeljian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 11 Sep 2018 22:17:11 +0000</lastBuildDate><atom:link href="http://Michaeljian.github.io/tags/%E9%80%92%E5%BD%92/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>约瑟夫算法</title>
+      <link>http://Michaeljian.github.io/post/%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Tue, 11 Sep 2018 22:17:11 +0000</pubDate>
+      
+      <guid>http://Michaeljian.github.io/post/%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%AE%97%E6%B3%95/</guid>
+      <description>&lt;p&gt;约瑟夫环问题是一个非常著名的趣题，即由n个人坐成一圈，按顺时针由1开始给他们编号。然后由第一个人开始报数，数到m的人出局。之后从下一个人开始继续报数，直到所有人都死亡为止。现在需要求的是最后一个出局的人的编号。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

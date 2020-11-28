@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>跳跃游戏 - Michaeljian</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Michaeljian" /><meta name="description" content="在跳跃游戏中，要明白贪心法则的定义。贪心法则：最基本的理解就是，每次选择当前最优的解，到最后就能得到整个问题的最优解法。
+" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.1 with theme even" />
+
+
+<link rel="canonical" href="http://Michaeljian.github.io/post/%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="跳跃游戏" />
+<meta property="og:description" content="在跳跃游戏中，要明白贪心法则的定义。贪心法则：最基本的理解就是，每次选择当前最优的解，到最后就能得到整个问题的最优解法。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://Michaeljian.github.io/post/%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/" />
+<meta property="article:published_time" content="2018-08-12T11:19:05+00:00" />
+<meta property="article:modified_time" content="2018-08-12T11:19:05+00:00" />
+<meta itemprop="name" content="跳跃游戏">
+<meta itemprop="description" content="在跳跃游戏中，要明白贪心法则的定义。贪心法则：最基本的理解就是，每次选择当前最优的解，到最后就能得到整个问题的最优解法。">
+<meta itemprop="datePublished" content="2018-08-12T11:19:05+00:00" />
+<meta itemprop="dateModified" content="2018-08-12T11:19:05+00:00" />
+<meta itemprop="wordCount" content="804">
+
+
+
+<meta itemprop="keywords" content="贪心法则,数组," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="跳跃游戏"/>
+<meta name="twitter:description" content="在跳跃游戏中，要明白贪心法则的定义。贪心法则：最基本的理解就是，每次选择当前最优的解，到最后就能得到整个问题的最优解法。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Michaeljian</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Michaeljian</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">跳跃游戏</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-08-12 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%AE%97%E6%B3%95/"> 算法 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1题目">1.题目</a></li>
+            <li><a href="#2举例">2.举例</a></li>
+            <li><a href="#3解题思路利用贪心法则">3.解题思路（利用贪心法则）</a></li>
+            <li><a href="#4具体代码如下">4.具体代码如下</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在跳跃游戏中，要明白贪心法则的定义。贪心法则：最基本的理解就是，每次选择当前最优的解，到最后就能得到整个问题的最优解法。</p>
+<h3 id="1题目">1.题目</h3>
+<p>给定数组arr，<code>arr[i]=k</code>代表可以从位置i向右跳1~k个距离。比如，<code>arr[2] == 3</code>，代表从位置2可以调到位置3、位置4或位置5。如果从位置0出发，返回最少跳几次能跳到arr最后的位置上。</p>
+<h3 id="2举例">2.举例</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">arr</span> <span class="o">=</span> <span class="o">{</span><span class="n">3</span><span class="o">,</span><span class="n">2</span><span class="o">,</span><span class="n">3</span><span class="o">,</span><span class="n">1</span><span class="o">,</span><span class="n">1</span><span class="o">,</span><span class="n">4</span><span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>arr[0]==3</code>，选择跳到位置2：<code>arr[2]==3</code>，可以跳到最后的位置。所以返回2.</p>
+<h3 id="3解题思路利用贪心法则">3.解题思路（利用贪心法则）</h3>
+<p>具体过程如下：</p>
+<ul>
+<li>1.整形变量jump，代表目前跳了多少步。（就是跳了几次，就是题目要求的值）。整形变量cur，代表如果只能跳jump步，最远能够到达的位置。（换句话说，按照上面的例子：假如你jump一次，从0位置开始a[0]==3，则你可以到达的最远的位置就是1,2,3）。整型变量next，代表如果在多跳一步，最远能够到达的位置。初始时，jump=0，cur=0，next=0.</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g8wltuz77fj30mj07bwer.jpg" alt="image.png"></p>
+<p>2.从左到右遍历arr，假设遍历到位置i。</p>
+<ul>
+<li>2.1如果<code>cur&gt;=i</code>，说明jump步可以达到位置i，此时什么也不做。</li>
+<li>2.2如果<code>cur&lt;i</code>，说明只跳jump不能到达位置i，需要多跳一步才行。此时令<code>jump++</code>，<code>cur=next</code>。表示多跳了一步，cur更新成jump+1步能够到达的位置，即next。</li>
+<li>2.3将next更新成<code>next = Math.max(next,i+arr[i]);</code>表示下一次多跳一步到达的最远位置。</li>
+</ul>
+<p>3.当遍历到arr的尾部时，最终返回jump即可。</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g8wltyso6zj30ll072jrl.jpg" alt="image.png"></p>
+<h3 id="4具体代码如下">4.具体代码如下</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * @author zhoujian123@hotmail.com 2018/8/15 15:53
+</span><span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JumpGame</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">jump</span><span class="o">(</span><span class="kt">int</span> <span class="o">[]</span> <span class="n">arr</span><span class="o">){</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">arr</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">arr</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">0</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="c1">//代表跳了几次
+</span><span class="c1"></span>        <span class="kt">int</span> <span class="n">jump</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">next</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">cur</span> <span class="o">&lt;</span> <span class="n">i</span><span class="o">){</span>
+                <span class="n">jump</span><span class="o">++;</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">next</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">next</span><span class="o">,</span><span class="n">i</span><span class="o">+</span><span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">jump</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">={</span><span class="n">3</span><span class="o">,</span><span class="n">2</span><span class="o">,</span><span class="n">3</span><span class="o">,</span><span class="n">1</span><span class="o">,</span><span class="n">1</span><span class="o">,</span><span class="n">4</span><span class="o">};</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">jump</span><span class="o">(</span><span class="n">arr</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>贪心方法的时间复杂度为O(n)，空间复杂度为O(1)。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Michaeljian</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-08-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E8%B4%AA%E5%BF%83%E6%B3%95%E5%88%99/">贪心法则</a>
+          <a href="/tags/%E6%95%B0%E7%BB%84/">数组</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">图的BFS和DFS</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/">
+            <span class="next-text nav-default">字典排序算法</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="zhoujian123@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.jianshu.com/u/0e1ea8a72008" class="iconfont icon-jianshu" title="jianshu"></a>
+      <a href="https://juejin.cn/user/2541726611803182" class="iconfont icon-juejin" title="juejin"></a>
+      <a href="https://github.com/Michaeljian" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/Michaelhbjian" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="http://Michaeljian.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Michaeljian</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

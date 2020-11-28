@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法 on Michaeljian</title>
+    <link>http://Michaeljian.github.io/categories/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on Michaeljian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 15 Sep 2018 15:19:44 +0000</lastBuildDate><atom:link href="http://Michaeljian.github.io/categories/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何设计实现一个LRU Cache</title>
+      <link>http://Michaeljian.github.io/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</link>
+      <pubDate>Sat, 15 Sep 2018 15:19:44 +0000</pubDate>
+      
+      <guid>http://Michaeljian.github.io/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</guid>
+      <description>&lt;p&gt;这道题是把操作系统和Java集合类联系起来的一道题目，是非常值得研究的一道题目。（思考点：缓存的算法设计和需要缓存的数据是以什么样的数据格式存放在那种数据结构中，这种数据结构可以有效的实现缓存的作用。）&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>约瑟夫算法</title>
+      <link>http://Michaeljian.github.io/post/%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Tue, 11 Sep 2018 22:17:11 +0000</pubDate>
+      
+      <guid>http://Michaeljian.github.io/post/%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%AE%97%E6%B3%95/</guid>
+      <description>&lt;p&gt;约瑟夫环问题是一个非常著名的趣题，即由n个人坐成一圈，按顺时针由1开始给他们编号。然后由第一个人开始报数，数到m的人出局。之后从下一个人开始继续报数，直到所有人都死亡为止。现在需要求的是最后一个出局的人的编号。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>最长回文子串</title>
+      <link>http://Michaeljian.github.io/post/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</link>
+      <pubDate>Fri, 31 Aug 2018 11:42:06 +0000</pubDate>
+      
+      <guid>http://Michaeljian.github.io/post/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</guid>
+      <description>&lt;p&gt;回文串是一个正读和反读都一样的字符串，比如&lt;code&gt;level&lt;/code&gt;或者&lt;code&gt;noon&lt;/code&gt;等等就是回文串。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>最长上升子序列</title>
+      <link>http://Michaeljian.github.io/post/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97/</link>
+      <pubDate>Tue, 28 Aug 2018 21:51:41 +0000</pubDate>
+      
+      <guid>http://Michaeljian.github.io/post/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97/</guid>
+      <description>&lt;p&gt;利用这个题目好好学习下动态规划，一直对动态规划不太理解。所以这边尽量以通俗易懂的语言将明白。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>图的BFS和DFS</title>
+      <link>http://Michaeljian.github.io/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/</link>
+      <pubDate>Sun, 19 Aug 2018 09:59:59 +0000</pubDate>
+      
+      <guid>http://Michaeljian.github.io/post/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86bfs%E5%92%8Cdfs/</guid>
+      <description>&lt;p&gt;图的遍历对于图这类题目来说非常重要，但是图的实现又非常的难。在这里我介绍下图的广度优先遍历和深度优先遍历，讲一下其中的算法思想。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跳跃游戏</title>
+      <link>http://Michaeljian.github.io/post/%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/</link>
+      <pubDate>Sun, 12 Aug 2018 11:19:05 +0000</pubDate>
+      
+      <guid>http://Michaeljian.github.io/post/%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/</guid>
+      <description>&lt;p&gt;在跳跃游戏中，要明白贪心法则的定义。贪心法则：最基本的理解就是，每次选择当前最优的解，到最后就能得到整个问题的最优解法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>字典排序算法</title>
+      <link>http://Michaeljian.github.io/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Sun, 12 Aug 2018 09:55:56 +0000</pubDate>
+      
+      <guid>http://Michaeljian.github.io/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/</guid>
+      <description>&lt;p&gt;在数学，字典或词典顺序（也称为词汇顺序，字典顺序，字母顺序或词典顺序）是基于字母顺序排列的单词按字母顺序排列的方法 。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

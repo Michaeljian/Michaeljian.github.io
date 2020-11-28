@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>字典排序算法 - Michaeljian</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Michaeljian" /><meta name="description" content="在数学，字典或词典顺序（也称为词汇顺序，字典顺序，字母顺序或词典顺序）是基于字母顺序排列的单词按字母顺序排列的方法 。
+" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.1 with theme even" />
+
+
+<link rel="canonical" href="http://Michaeljian.github.io/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="字典排序算法" />
+<meta property="og:description" content="在数学，字典或词典顺序（也称为词汇顺序，字典顺序，字母顺序或词典顺序）是基于字母顺序排列的单词按字母顺序排列的方法 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://Michaeljian.github.io/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/" />
+<meta property="article:published_time" content="2018-08-12T09:55:56+00:00" />
+<meta property="article:modified_time" content="2018-08-12T09:55:56+00:00" />
+<meta itemprop="name" content="字典排序算法">
+<meta itemprop="description" content="在数学，字典或词典顺序（也称为词汇顺序，字典顺序，字母顺序或词典顺序）是基于字母顺序排列的单词按字母顺序排列的方法 。">
+<meta itemprop="datePublished" content="2018-08-12T09:55:56+00:00" />
+<meta itemprop="dateModified" content="2018-08-12T09:55:56+00:00" />
+<meta itemprop="wordCount" content="891">
+
+
+
+<meta itemprop="keywords" content="字符串,字典排序," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="字典排序算法"/>
+<meta name="twitter:description" content="在数学，字典或词典顺序（也称为词汇顺序，字典顺序，字母顺序或词典顺序）是基于字母顺序排列的单词按字母顺序排列的方法 。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Michaeljian</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Michaeljian</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">字典排序算法</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-08-12 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%AE%97%E6%B3%95/"> 算法 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#386字典序排数leetcode">386.字典序排数（LeetCode）</a></li>
+            <li><a href="#440字典序的第k小数字">440.字典序的第k小数字</a></li>
+            <li><a href="#1题目描述">1.题目描述</a></li>
+            <li><a href="#2示例">2.示例</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在数学，字典或词典顺序（也称为词汇顺序，字典顺序，字母顺序或词典顺序）是基于字母顺序排列的单词按字母顺序排列的方法 。</p>
+<h3 id="386字典序排数leetcode">386.字典序排数（LeetCode）</h3>
+<p>题目如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">给定一个整数</span> <span class="n">n</span><span class="o">,</span> <span class="n">返回从</span> <span class="n">1</span> <span class="n">到</span> <span class="n">n</span> <span class="n">的字典顺序</span><span class="err">。</span>
+<span class="n">例如</span><span class="err">，</span>
+<span class="n">给定</span> <span class="n">n</span> <span class="o">=</span><span class="n">13</span><span class="err">，</span><span class="n">返回</span> <span class="o">[</span><span class="n">1</span><span class="o">,</span><span class="n">10</span><span class="o">,</span><span class="n">11</span><span class="o">,</span><span class="n">12</span><span class="o">,</span><span class="n">13</span><span class="o">,</span><span class="n">2</span><span class="o">,</span><span class="n">3</span><span class="o">,</span><span class="n">4</span><span class="o">,</span><span class="n">5</span><span class="o">,</span><span class="n">6</span><span class="o">,</span><span class="n">7</span><span class="o">,</span><span class="n">8</span><span class="o">,</span><span class="n">9</span><span class="o">]</span> <span class="err">。</span>
+<span class="n">请尽可能的优化算法的时间复杂度和空间复杂度</span><span class="err">。</span> <span class="n">输入的数据</span> <span class="n">n</span> <span class="n">小于等于</span> <span class="n">5</span><span class="o">,</span><span class="n">000</span><span class="o">,</span><span class="n">000</span><span class="err">。</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>解题思路：</p>
+<p>从输入的1开始遍历，分三种情况讨论：</p>
+<ul>
+<li>当n乘以10的时候小于N，就把10这个数加入list中；</li>
+<li>然后此时的n已经等于10了，再去判断11、12、13，通过n+1小于N来获得11、12、13；</li>
+<li>最后，此时的n等于13，通过（n/10）%10等到1，在加上1。从2开始找出剩下的值。</li>
+</ul>
+<p>代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.zhoujian.solutions.leetcode</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * @author zhoujian123@hotmail.com 2018/8/12 11:24
+</span><span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DicOrder</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">lexicalOrder</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">){</span>
+        <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+        <span class="kt">int</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;=</span><span class="n">n</span> <span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">curr</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">curr</span><span class="o">*</span><span class="n">10</span> <span class="o">&lt;=</span><span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">curr</span><span class="o">*=</span><span class="n">10</span><span class="o">;</span>
+            <span class="o">}</span><span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">curr</span><span class="o">%</span><span class="n">10</span><span class="o">!=</span><span class="n">9</span><span class="o">&amp;&amp;</span><span class="n">curr</span><span class="o">+</span><span class="n">1</span><span class="o">&lt;=</span><span class="n">n</span><span class="o">){</span>
+                <span class="n">curr</span><span class="o">++;</span>
+            <span class="o">}</span><span class="k">else</span> <span class="o">{</span>
+                <span class="k">while</span> <span class="o">((</span><span class="n">curr</span><span class="o">/</span><span class="n">10</span><span class="o">)%</span><span class="n">10</span> <span class="o">==</span><span class="n">9</span><span class="o">){</span>
+                    <span class="n">curr</span><span class="o">/=</span><span class="n">10</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">/</span><span class="n">10</span><span class="o">+</span><span class="n">1</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">list</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">arrayList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+        <span class="n">arrayList</span> <span class="o">=</span> <span class="n">lexicalOrder</span><span class="o">(</span><span class="n">13</span><span class="o">);</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">arrayList</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">arrayList</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>结果如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g8wlkm8blpj30az095743.jpg" alt="image.png"></p>
+<p>时间复杂度为O(n)，空间复杂度为O(1)。</p>
+<h3 id="440字典序的第k小数字">440.字典序的第k小数字</h3>
+<p>题目</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">给定整数</span> <span class="n">n</span> <span class="n">和</span> <span class="n">k</span><span class="err">，</span><span class="n">找到</span> <span class="n">1</span> <span class="n">到</span> <span class="n">n</span> <span class="n">中字典序第</span> <span class="n">k</span> <span class="n">小的数字</span><span class="err">。（</span><span class="o">**</span><span class="n">不是按照数字的标准</span><span class="err">，</span><span class="n">而是按照字典树的排序</span><span class="o">**</span><span class="err">）</span>
+<span class="n">注意</span><span class="err">：</span><span class="n">1</span> <span class="err">≤</span> <span class="n">k</span> <span class="err">≤</span> <span class="n">n</span> <span class="err">≤</span> <span class="n">109</span><span class="err">。</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>示例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nl">输入:</span>
+<span class="nl">n:</span> <span class="n">13</span>   <span class="n">k</span><span class="o">:</span> <span class="n">2</span>
+<span class="nl">输出:</span>
+<span class="n">10</span>
+<span class="nl">解释:</span>
+<span class="n">字典序的排列是</span> <span class="o">[</span><span class="n">1</span><span class="o">,</span> <span class="n">10</span><span class="o">,</span> <span class="n">11</span><span class="o">,</span> <span class="n">12</span><span class="o">,</span> <span class="n">13</span><span class="o">,</span> <span class="n">2</span><span class="o">,</span> <span class="n">3</span><span class="o">,</span> <span class="n">4</span><span class="o">,</span> <span class="n">5</span><span class="o">,</span> <span class="n">6</span><span class="o">,</span> <span class="n">7</span><span class="o">,</span> <span class="n">8</span><span class="o">,</span> <span class="n">9</span><span class="o">]</span><span class="err">，</span><span class="n">所以第二小的数字是</span> <span class="n">10</span><span class="err">。</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>从上面的代码可知，list中存放的已经是排序好的字典树。直接list.get(k-1)就可以得出答案了。</p>
+<h3 id="1题目描述">1.题目描述</h3>
+<p>小易在学校中学习了关于字符串的理论，于是他基于此完成了一个字典的项目。小易的这个字典很奇特，字典内的每个单词都包含n个“a”和m个“z”，并且所有单词按照字典序列。小易现在希望你能他找出第k个单词。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html">输入描述：输入包括一行三个整数n,m,k(1<span class="err">&lt;</span>=n,m<span class="err">&lt;</span>=100),1<span class="err">&lt;</span>=k<span class="err">&lt;</span>=10^9)，以空格分割。
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">输出描述：输出第k个字典中的字符串，如果无解，输出-1
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="2示例">2.示例</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">输入</span><span class="err">：</span><span class="n">2</span> <span class="n">2</span> <span class="n">6</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">输出</span><span class="err">：</span><span class="n">zzaa</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>说明</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">字典中的字符串依次为aazz</span> <span class="n">azaz</span> <span class="n">azza</span> <span class="n">zaaz</span> <span class="n">zaza</span> <span class="n">zzaa</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Michaeljian</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-08-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
+          <a href="/tags/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/">字典排序</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">跳跃游戏</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95%E7%AF%87/">
+            <span class="next-text nav-default">深入理解Java虚拟机之垃圾收集算法篇</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="zhoujian123@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.jianshu.com/u/0e1ea8a72008" class="iconfont icon-jianshu" title="jianshu"></a>
+      <a href="https://juejin.cn/user/2541726611803182" class="iconfont icon-juejin" title="juejin"></a>
+      <a href="https://github.com/Michaeljian" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/Michaelhbjian" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="http://Michaeljian.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Michaeljian</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

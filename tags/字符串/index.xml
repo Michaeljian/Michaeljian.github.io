@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>字符串 on Michaeljian</title>
+    <link>http://Michaeljian.github.io/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/</link>
+    <description>Recent content in 字符串 on Michaeljian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 31 Aug 2018 11:42:06 +0000</lastBuildDate><atom:link href="http://Michaeljian.github.io/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>最长回文子串</title>
+      <link>http://Michaeljian.github.io/post/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</link>
+      <pubDate>Fri, 31 Aug 2018 11:42:06 +0000</pubDate>
+      
+      <guid>http://Michaeljian.github.io/post/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</guid>
+      <description>&lt;p&gt;回文串是一个正读和反读都一样的字符串，比如&lt;code&gt;level&lt;/code&gt;或者&lt;code&gt;noon&lt;/code&gt;等等就是回文串。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>字典排序算法</title>
+      <link>http://Michaeljian.github.io/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Sun, 12 Aug 2018 09:55:56 +0000</pubDate>
+      
+      <guid>http://Michaeljian.github.io/post/%E5%AD%97%E5%85%B8%E6%8E%92%E5%BA%8F/</guid>
+      <description>&lt;p&gt;在数学，字典或词典顺序（也称为词汇顺序，字典顺序，字母顺序或词典顺序）是基于字母顺序排列的单词按字母顺序排列的方法 。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

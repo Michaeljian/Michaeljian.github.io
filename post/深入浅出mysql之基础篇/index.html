@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>深入浅出MySQL之基础篇 - Michaeljian</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Michaeljian" /><meta name="description" content="对于Java后台开发，掌握掌握数据库相关的知识是必不可少的。一直觉得数据库是自己的最薄弱的环节，趁寒假时间对数据库知识做一个补充！
+" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.1 with theme even" />
+
+
+<link rel="canonical" href="http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%9F%BA%E7%A1%80%E7%AF%87/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="深入浅出MySQL之基础篇" />
+<meta property="og:description" content="对于Java后台开发，掌握掌握数据库相关的知识是必不可少的。一直觉得数据库是自己的最薄弱的环节，趁寒假时间对数据库知识做一个补充！" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://Michaeljian.github.io/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%9F%BA%E7%A1%80%E7%AF%87/" />
+<meta property="article:published_time" content="2018-02-12T13:25:02+00:00" />
+<meta property="article:modified_time" content="2018-02-12T13:25:02+00:00" />
+<meta itemprop="name" content="深入浅出MySQL之基础篇">
+<meta itemprop="description" content="对于Java后台开发，掌握掌握数据库相关的知识是必不可少的。一直觉得数据库是自己的最薄弱的环节，趁寒假时间对数据库知识做一个补充！">
+<meta itemprop="datePublished" content="2018-02-12T13:25:02+00:00" />
+<meta itemprop="dateModified" content="2018-02-12T13:25:02+00:00" />
+<meta itemprop="wordCount" content="4046">
+
+
+
+<meta itemprop="keywords" content="数据库,MySQL," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="深入浅出MySQL之基础篇"/>
+<meta name="twitter:description" content="对于Java后台开发，掌握掌握数据库相关的知识是必不可少的。一直觉得数据库是自己的最薄弱的环节，趁寒假时间对数据库知识做一个补充！"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Michaeljian</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Michaeljian</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">深入浅出MySQL之基础篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-02-12 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"> 数据库 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1sql基础">1.SQL基础</a></li>
+            <li><a href="#2mysql支持的数据类型">2.MySQL支持的数据类型</a></li>
+            <li><a href="#3mysql中的运算符">3.MySQL中的运算符</a></li>
+            <li><a href="#4常用函数">4.常用函数</a></li>
+            <li><a href="#参考资料">参考资料</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>对于Java后台开发，掌握掌握数据库相关的知识是必不可少的。一直觉得数据库是自己的最薄弱的环节，趁寒假时间对数据库知识做一个补充！</p>
+<h3 id="1sql基础">1.SQL基础</h3>
+<p>SQL分为数据库定义语言（<code>DDL：Data Defineition Language</code>）、数据操纵语言（<code>DML：Data Manipulation Language</code>）、数据定义语言（<code>DCL：Data Control Language</code>）。</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8rwepno22j30lb06zq2y.jpg" alt="image.png"></p>
+<h5 id="11数据库定义语言ddl">1.1数据库定义语言DDL</h5>
+<p><strong>1.创建数据库</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"> <span class="o">#</span><span class="err">创建数据库</span>
+ <span class="k">create</span> <span class="k">database</span> <span class="n">dbname</span>
+ <span class="o">#</span><span class="err">查看数据库</span>
+ <span class="k">show</span> <span class="n">databases</span>
+ <span class="o">#</span><span class="err">打开数据</span>
+ <span class="n">use</span> <span class="n">dbname</span>
+ <span class="o">#</span><span class="err">查看数据库中的表</span>
+ <span class="k">show</span> <span class="n">tables</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>2.删除数据库</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">删除数据库</span>
+<span class="k">drop</span> <span class="k">database</span> <span class="n">dbname</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>3.创建表</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">创建表</span>
+<span class="k">create</span> <span class="k">table</span> <span class="n">emp</span><span class="p">(</span><span class="n">ename</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="n">hiredate</span> <span class="nb">date</span><span class="p">,</span><span class="n">sal</span> <span class="nb">decimal</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="n">deptno</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="o">#</span><span class="err">查看表定义</span>
+<span class="k">desc</span> <span class="n">emp</span>
+<span class="o">#</span><span class="err">查看详细的表信息</span>
+<span class="k">show</span> <span class="k">create</span> <span class="k">table</span> <span class="n">emp</span> <span class="err">\</span><span class="k">G</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>4.删除表</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">删除表</span>
+<span class="k">drop</span> <span class="k">table</span> <span class="n">emp</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>5.修改表</strong></p>
+<p>（1）修改表类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">修改表</span><span class="n">emp的ename字段定义</span><span class="err">，将</span><span class="nb">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="err">改为</span><span class="nb">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="k">alter</span> <span class="k">table</span> <span class="n">emp</span> <span class="k">modify</span> <span class="n">ename</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（2）增加表字段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">在</span><span class="n">emp表中增加新字段age</span><span class="err">，类型为</span><span class="nb">int</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">alter</span> <span class="k">table</span> <span class="n">emp</span> <span class="k">add</span> <span class="k">column</span> <span class="n">age</span> <span class="nb">int</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（3）删除表字段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">将字段</span><span class="n">age删除掉</span>
+<span class="k">alter</span> <span class="k">table</span> <span class="n">emp</span> <span class="k">drop</span> <span class="k">column</span> <span class="n">age</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（4）字段改名</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">将</span><span class="n">age改名为age1</span><span class="err">，同时修改字段类型为</span><span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="k">alter</span> <span class="k">table</span> <span class="n">emp</span> <span class="n">change</span> <span class="n">age</span> <span class="n">age1</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>注意：<code>change</code>和<code>modify</code>都可以修改表的定义，不同的是<code>change</code>后面需要写两次列名，不方便。但是<code>change</code>的优点是可以修改列名称，<code>modify</code>则不能。</p>
+</blockquote>
+<p>（5）修改字段排列顺序</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">将新的字段</span><span class="n">birth</span> <span class="n">date加载ename之后</span>
+<span class="k">alter</span> <span class="k">table</span> <span class="n">emp</span> <span class="k">add</span> <span class="n">birth</span> <span class="nb">date</span> <span class="k">after</span> <span class="n">ename</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（6）更改表名</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">将表</span><span class="n">emp改名为emp1</span>
+<span class="k">alter</span> <span class="k">table</span> <span class="n">emp</span> <span class="k">rename</span> <span class="n">emp1</span>
+</code></pre></td></tr></table>
+</div>
+</div><h5 id="12数据操纵语言dml">1.2数据操纵语言DML</h5>
+<p><strong>1.插入记录</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">将表</span><span class="n">emp中插入以下记录</span>
+<span class="k">insert</span> <span class="k">into</span> <span class="n">emp</span> <span class="p">(</span><span class="n">ename</span><span class="p">,</span><span class="n">hiredate</span><span class="p">,</span><span class="n">sal</span><span class="p">,</span><span class="n">deptno</span><span class="p">)</span><span class="k">values</span><span class="p">(</span><span class="s1">&#39;zzx1&#39;</span><span class="p">,</span><span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span><span class="s1">&#39;2000&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">#</span><span class="err">也可以不用指定字段名称，但是</span><span class="n">values后面的顺序应该和字段的排列顺序一致</span>
+<span class="k">insert</span> <span class="k">into</span> <span class="n">emp</span> <span class="k">values</span><span class="p">(</span><span class="s1">&#39;lisi&#39;</span><span class="p">,</span><span class="s1">&#39;2003-02-01&#39;</span><span class="p">,</span><span class="s1">&#39;3000&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">#</span><span class="err">字段中没有赋值的默认为</span><span class="k">NULL</span>
+
+<span class="o">#</span><span class="err">插入多条记录，每条记录之间都用逗号进行了分隔。这个特性可以使得</span><span class="n">mysql在插入大量记录时</span><span class="err">，节省很多的网络开销，大大提高了插入效率</span>
+<span class="k">insert</span> <span class="k">into</span> <span class="n">dept</span> <span class="k">values</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">&#39;dept5&#39;</span><span class="p">),(</span><span class="mi">6</span><span class="p">,</span><span class="s1">&#39;dept6&#39;</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>2.更新记录</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">将表</span><span class="n">emp中ename为</span><span class="o">`</span><span class="n">lisi</span><span class="o">`</span><span class="err">的薪水</span><span class="n">sal从3000更改为4000</span>
+<span class="k">update</span> <span class="n">emp</span> <span class="k">set</span> <span class="n">sal</span><span class="o">=</span><span class="mi">4000</span> <span class="k">where</span> <span class="n">ename</span><span class="o">=</span><span class="s1">&#39;lisi&#39;</span>
+
+<span class="o">#</span><span class="err">多表更新</span>
+<span class="o">#</span><span class="err">同时更新表</span><span class="n">emp中的字段sal和表dept中的字段deptname</span><span class="p">,</span><span class="err">更新后的</span><span class="n">sal为之前的sal乘以deptno</span><span class="p">,</span><span class="n">deptname为emp表中的ename</span>
+<span class="k">update</span> <span class="n">emp</span> <span class="n">a</span><span class="p">,</span><span class="n">dept</span> <span class="n">b</span> <span class="k">set</span> <span class="n">a</span><span class="p">.</span><span class="n">sal</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">sal</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">deptno</span><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">deptname</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">ename</span> <span class="k">where</span> <span class="n">a</span><span class="p">.</span><span class="n">deptno</span><span class="o">=</span><span class="n">b</span><span class="p">.</span><span class="n">deptno</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>注意：多表更新的语法更多地用在根据一个表的字段来动态的更新另外一个表的字段</p>
+</blockquote>
+<p><strong>3.删除记录</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">在</span><span class="n">emp中将ename为</span><span class="o">`</span><span class="n">dony</span><span class="o">`</span><span class="err">的记录全部删除</span>
+<span class="k">delete</span> <span class="k">from</span> <span class="n">emp</span> <span class="k">where</span> <span class="n">ename</span><span class="o">=</span><span class="s1">&#39;dony&#39;</span>
+
+<span class="o">#</span><span class="err">一次删除多个表的数据</span>
+<span class="o">#</span><span class="err">同时删除表</span><span class="n">emp和表dept中的deptno为3的记录</span>
+<span class="k">delete</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="k">from</span> <span class="n">emp</span> <span class="n">a</span><span class="p">,</span><span class="n">dept</span> <span class="n">b</span> <span class="k">where</span> <span class="n">a</span><span class="p">.</span><span class="n">deptno</span><span class="o">=</span><span class="n">b</span><span class="p">.</span><span class="n">deptno</span> <span class="k">and</span> <span class="n">a</span><span class="p">.</span><span class="n">deptno</span><span class="o">=</span><span class="mi">3</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>4.查询记录</strong></p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8rwg6vl5mj30sm0n876r.jpg" alt="image.png"></p>
+<p>（1）查询不重复的记录（distinct）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">将表中的记录去掉重复后显示出来，可以用</span><span class="n">distinct来实现</span>
+<span class="k">select</span> <span class="k">distinct</span> <span class="n">deptno</span> <span class="k">from</span> <span class="n">emp</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（2）条件查询（where）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">查询所有</span><span class="n">deptno为1的记录</span>
+<span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">emp</span> <span class="k">where</span> <span class="n">deptno</span> <span class="o">=</span><span class="mi">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>where</code>后面的条件是一个字段的<code>=</code>比较，除了<code>=</code>之外，还可以使用<code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>&lt;=</code>、<code>!=</code>等比较运算符；多个条件查询还可以使用<code>or</code>、<code>and</code>等逻辑运算符进行多条件联合查询</p>
+<p>（3）排序和限制（order by）</p>
+<p>我们经常会有这样的需求，取出按照某个字段进行排序后的记录结果集，这就要用到<code>order by</code>来实现</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">tablename</span> <span class="p">[</span><span class="k">where</span> <span class="k">condition</span><span class="p">][</span><span class="k">order</span> <span class="k">by</span> <span class="n">field1</span> <span class="p">[</span><span class="k">desc</span><span class="o">/</span><span class="k">asc</span><span class="p">],</span><span class="n">field2</span> <span class="p">[</span><span class="k">desc</span><span class="o">/</span><span class="k">asc</span><span class="p">]...]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>如果排序字段的值一样，则值相同得字段按照第二个排序字段进行排序，依次类推。如果只有一个排序字段，则这些字段相同的记录将会无需排列。</p>
+<p>对于排序后的记录，如果只希望显示一部分，而不是全部。这时，就可以使用limit关键字来实现。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="p">...</span> <span class="k">limit</span> <span class="n">offset_start</span><span class="p">,</span><span class="k">row_count</span>
+<span class="o">#</span><span class="n">offset_start表示记录的起始偏移量</span><span class="err">，</span><span class="n">row_count表示显示的行数</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><code>limit</code>经常和<code>order by</code>一起配合使用来进行记录的分页显示</p>
+</blockquote>
+<p>（4）聚合</p>
+<p>很多情况下，用户都需要进行一个汇总操作，这时就要用到SQL的聚合操作。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="p">[</span><span class="n">field1</span><span class="p">,</span><span class="n">field2</span><span class="p">,...]</span> <span class="n">fun_name</span>
+<span class="k">from</span> <span class="n">tablename</span>
+<span class="p">[</span><span class="k">where</span> <span class="n">where_contition</span><span class="p">]</span>
+<span class="p">[</span><span class="k">group</span> <span class="k">by</span> <span class="n">field1</span><span class="p">,</span><span class="n">field2</span><span class="p">...[</span><span class="k">with</span> <span class="n">rollup</span><span class="p">]]</span>
+<span class="p">[</span><span class="k">having</span> <span class="n">where_contition</span><span class="p">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>对其参数进行一下说明：</p>
+<ul>
+<li><code>fun_name</code>表示要做的聚合操作，也就是聚合函数，常用的有<code>sum</code>、<code>count(*)</code>、<code>max</code>、<code>min</code></li>
+<li><code>group by</code>关键字表示要进行分类聚合的字段</li>
+<li><code>with rollup</code>是可选语法，表明是否对分类聚合后的结果进行再汇总</li>
+<li><code>having</code>关键字表示对分类后的结果在进行条件的过滤</li>
+</ul>
+<blockquote>
+<p>注意：<code>having</code>和<code>where</code>的区别在于，<code>having</code>是对聚合后的结果进行条件的过滤，而<code>where</code>是在聚合前就对记录进行过滤，如果逻辑允许，我们尽可能用<code>where</code>先过滤记录，这样因为结果集减少，将对聚合的效率大大提高，最后在根据逻辑看是否用<code>having</code>进行再过滤。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">统计人数大于</span><span class="mi">1</span><span class="err">人的部门</span>
+<span class="k">select</span> <span class="n">deptno</span><span class="p">,</span><span class="k">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">from</span> <span class="n">emp</span> <span class="k">group</span> <span class="k">by</span> <span class="n">deptno</span> <span class="k">having</span> <span class="k">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（5）表连接</p>
+<p>当需要同时显示多个表中的字段时，就可以用表连接来实现这样的功能。从大类上分，表分为内连接和外连接，它们之间最主要的区别是，内连接仅选出两张表中相互匹配的记录，而外连接会选出其他不匹配的记录。我们最常用的是内连接。</p>
+<p>外连接又分为<strong>左连接</strong>和<strong>右连接</strong> ，具体定义如下：</p>
+<ul>
+<li>左连接：包含所有的左边表中的记录甚至是右边表中没有和它匹配的记录。</li>
+<li>右连接：包含所有的右边表中的记录甚至是左边表中没有和它匹配的记录。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="n">ename</span><span class="p">,</span><span class="n">deptname</span> <span class="k">from</span> <span class="n">emp</span> <span class="k">left</span> <span class="k">join</span> <span class="n">dept</span> <span class="k">where</span> <span class="n">emp</span><span class="p">.</span><span class="n">deptno</span><span class="o">=</span><span class="n">dept</span><span class="p">.</span><span class="n">deptno</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（6）子查询（**重点 **）</p>
+<p>某些情况下，当进行查询的时候，需要的条件是另外一个select语句的结果，这个时候，就要用到子查询。用于子查询的关键字主要包括<code>in</code>、<code>not in</code>、<code>=</code>、<code>!=</code>、<code>exist</code>、<code>not exist</code>等。</p>
+<blockquote>
+<p>如果子查询记录数唯一，还可以用<code>=</code>代替<code>in</code></p>
+</blockquote>
+<p>详细查询过程在基于Hive查询中可以看到。</p>
+<p>（7）记录联合</p>
+<p>我们经常会碰到这样的应用，将两个表的数据按照一定的查询条件查询出来之后，将结果合并到一起显示出来，这个时候，就需要用<code>union</code>和<code>union all</code>关键字来实现这样的功能，具体语法如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">t1</span>
+<span class="k">union</span><span class="o">/</span><span class="k">union</span> <span class="k">all</span>
+<span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">t2</span>
+<span class="p">...</span>
+<span class="k">union</span><span class="o">/</span><span class="k">union</span> <span class="k">all</span>
+<span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">tm</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>union</code>和<code>union all</code>的主要区别是<code>union all</code>是把结果集直接合并在一起，而<code>union</code>是将<code>union all</code>后的结果进行一次<code>distinct</code>，去除重复记录后的结果。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="n">deptno</span> <span class="k">from</span> <span class="n">emp</span>
+<span class="k">union</span> <span class="k">all</span>
+<span class="k">select</span> <span class="n">deptno</span> <span class="k">from</span> <span class="n">dept</span>
+</code></pre></td></tr></table>
+</div>
+</div><h5 id="13数据控制语言ddl">1.3数据控制语言DDL</h5>
+<p>DCL语句主要是DBA用来管理系统中的对象权限时使用，一般的开发人员很少使用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">grant</span> <span class="k">select</span><span class="p">,</span><span class="k">insert</span> <span class="k">on</span> <span class="n">sakila</span><span class="p">.</span><span class="o">*</span><span class="k">to</span> <span class="s1">&#39;z1@localhost&#39;</span> <span class="n">identified</span> <span class="k">by</span> <span class="s1">&#39;123&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="2mysql支持的数据类型">2.MySQL支持的数据类型</h3>
+<h4 id="21数据类型">2.1数据类型</h4>
+<table>
+<thead>
+<tr>
+<th>整数类型</th>
+<th>字节</th>
+<th>最大值、最小值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TINYINT</td>
+<td>1</td>
+<td>-128~127</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>2</td>
+<td>-32768~32767</td>
+</tr>
+<tr>
+<td>MEDIUMINT</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td>INT、INTGER</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>浮点数</td>
+<td>字节</td>
+<td>最大值、最小值</td>
+</tr>
+<tr>
+<td>FLOAT</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>定点数</td>
+<td>字节</td>
+<td></td>
+</tr>
+<tr>
+<td>DEC(M,D)</td>
+<td>M+2</td>
+<td></td>
+</tr>
+<tr>
+<td>DECIMAL(M,D)</td>
+<td>M+2</td>
+<td></td>
+</tr>
+<tr>
+<td>位类型</td>
+<td>字节</td>
+<td></td>
+</tr>
+<tr>
+<td>BIT(M)</td>
+<td>1~8</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="22日期时间类型">2.2.日期时间类型</h4>
+<table>
+<thead>
+<tr>
+<th>日期和时间类型</th>
+<th>字节</th>
+<th>零值表示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DATE</td>
+<td>4</td>
+<td>0000-00-00 00:00:00</td>
+</tr>
+<tr>
+<td>DATETIME</td>
+<td>8</td>
+<td>0000-00-00</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>4</td>
+<td>00000000000000</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>3</td>
+<td>00:00:00</td>
+</tr>
+<tr>
+<td>YEAR</td>
+<td>1</td>
+<td>0000</td>
+</tr>
+</tbody>
+</table>
+<h4 id="23字符串类型">2.3字符串类型</h4>
+<table>
+<thead>
+<tr>
+<th>字符串类型</th>
+<th>字节</th>
+<th>描述及存储需求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHAR(M)</td>
+<td>M</td>
+<td>M为0~255之间的整数</td>
+</tr>
+<tr>
+<td>VARCHAR(M)</td>
+<td></td>
+<td>M为0~65535之间的整数</td>
+</tr>
+<tr>
+<td>TINYBLOB</td>
+<td></td>
+<td>允许长度0~255字节</td>
+</tr>
+<tr>
+<td>BLOB</td>
+<td></td>
+<td>允许长度0~65535字节</td>
+</tr>
+<tr>
+<td>MEDIUMBLOB</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>LONGBLOB</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>TINYTEXT</td>
+<td></td>
+<td>允许长度0~255字节</td>
+</tr>
+<tr>
+<td>TEXT</td>
+<td></td>
+<td>允许长度0~65535字节</td>
+</tr>
+<tr>
+<td>MEDIUMTEXT</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>LONGTEXT</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>VARBINARY(M)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>BINARY(M)</td>
+<td>M</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3mysql中的运算符">3.MySQL中的运算符</h3>
+<h4 id="31算术运算符">3.1算术运算符</h4>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+</td>
+<td>加法</td>
+</tr>
+<tr>
+<td>-</td>
+<td>减法</td>
+</tr>
+<tr>
+<td>*</td>
+<td>乘法</td>
+</tr>
+<tr>
+<td>/，DIV</td>
+<td>除法，返回商</td>
+</tr>
+<tr>
+<td>%，MOD</td>
+<td>除法，返回余数</td>
+</tr>
+</tbody>
+</table>
+<h4 id="32比较运算符">3.2比较运算符</h4>
+<p>当使用<code>select</code>进行查询时，MySQL允许用户对表达式的左边操作数和右边操作数进行比较，比较结果为真则返回1，比较结果为假则返回0，比较结果不确定则返回NULL。</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>=</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>&lt;&gt;或!=</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>&lt;=&gt;</td>
+<td>NULL安全的等于</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>(&gt;=)</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>BETWEEN</td>
+<td>存在于指定范围</td>
+</tr>
+<tr>
+<td>IN</td>
+<td>存在于指定集合</td>
+</tr>
+<tr>
+<td>IS NULL</td>
+<td>为NULL</td>
+</tr>
+<tr>
+<td>IS NOT NULL</td>
+<td>不为NULL</td>
+</tr>
+<tr>
+<td>LIKE</td>
+<td>通配符匹配</td>
+</tr>
+<tr>
+<td>REGEXP或RLIKE</td>
+<td>正则表达式匹配</td>
+</tr>
+</tbody>
+</table>
+<h4 id="33逻辑运算符">3.3逻辑运算符</h4>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NOT或!</td>
+<td>非</td>
+</tr>
+<tr>
+<td>AND或&amp;&amp;</td>
+<td>与</td>
+</tr>
+<tr>
+<td>OR或||</td>
+<td>或</td>
+</tr>
+<tr>
+<td>XOR</td>
+<td>异或</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>XOR表示逻辑异或，当任意一个操作数为NULL时，返回值为NULL。对于非NULL的操作数，如果两个的逻辑真假值相异，则返回结果1，否则返回0</p>
+</blockquote>
+<h4 id="34位运算符">3.4位运算符</h4>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&amp;</td>
+<td style="text-align:left">位与（位AND）</td>
+</tr>
+<tr>
+<td>|</td>
+<td style="text-align:left">位或（位OR）</td>
+</tr>
+<tr>
+<td>^</td>
+<td style="text-align:left">位异或（位XOR）</td>
+</tr>
+<tr>
+<td>~</td>
+<td style="text-align:left">位取反</td>
+</tr>
+<tr>
+<td>(&laquo;)</td>
+<td style="text-align:left">位右移</td>
+</tr>
+<tr>
+<td>&laquo;</td>
+<td style="text-align:left">位左移</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>对1做位取反：在MySQL中，常量数字默认会以8个字节来表示，8个字节就是64位，常量1的二进制位表示为63个0加一个1，位取反后就是63个1加一个0。</p>
+</blockquote>
+<h3 id="4常用函数">4.常用函数</h3>
+<h4 id="41字符串函数">4.1字符串函数</h4>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>concat(s1,s2,&hellip;,sn)</td>
+<td>连接s1,s2,&hellip;sn为一个字符串</td>
+</tr>
+<tr>
+<td>insert(str,x,y,instr)</td>
+<td>将字符串str从第x位置开始，y个字符长的子串替换为字符串instr</td>
+</tr>
+<tr>
+<td>lower(str)</td>
+<td>将字符串str中的所有字符变为小写</td>
+</tr>
+<tr>
+<td>upper(str)</td>
+<td>将字符串str中所有的字符变为大写</td>
+</tr>
+<tr>
+<td>left(str,x)</td>
+<td>返回字符串str最左边的x个字符</td>
+</tr>
+<tr>
+<td>right(str,x)</td>
+<td>返回字符串str最右边的x个字符</td>
+</tr>
+<tr>
+<td>lpad(str,n,pad)</td>
+<td>用字符串pad对str最左边进行填充，直到长度为n个字符长度</td>
+</tr>
+<tr>
+<td>rpad(str,n,pad)</td>
+<td>用字符串pad对str最右边进行填充，直到长度为n个字符长度</td>
+</tr>
+<tr>
+<td>ltrim(str)</td>
+<td>去掉字符串str左侧的空格</td>
+</tr>
+<tr>
+<td>rtrim(str)</td>
+<td>去掉字符串str行尾的空格</td>
+</tr>
+<tr>
+<td>repeat(str,x)</td>
+<td>返回str重复x次的结果</td>
+</tr>
+<tr>
+<td>replace(str,a,b)</td>
+<td>用字符串b替换字符串str中所有出现的字符串a</td>
+</tr>
+<tr>
+<td>strcmp(s1,s2)</td>
+<td>比较字符串s1和s2</td>
+</tr>
+<tr>
+<td>trim(str)</td>
+<td>去掉字符串行尾和行头的空格</td>
+</tr>
+<tr>
+<td>substring(str,x,y)</td>
+<td>返回从字符串str x位置起y个字符长度的子串</td>
+</tr>
+</tbody>
+</table>
+<h4 id="42数值函数">4.2数值函数</h4>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>abs(x)</td>
+<td>返回x的绝对值</td>
+</tr>
+<tr>
+<td>ceil(x)</td>
+<td>返回大于x的最小正整数</td>
+</tr>
+<tr>
+<td>floor(x)</td>
+<td>返回小于x的最大正整数</td>
+</tr>
+<tr>
+<td>mod(x,y)</td>
+<td>返回x/y的摸</td>
+</tr>
+<tr>
+<td>rand()</td>
+<td>返回0~1内的随机值</td>
+</tr>
+<tr>
+<td>round(x,y)</td>
+<td>返回参数x的四舍五入的有y位小数的值</td>
+</tr>
+<tr>
+<td>truncate(x,y)</td>
+<td>返回数字x截断为y位小数的结果</td>
+</tr>
+</tbody>
+</table>
+<h4 id="43日期和时间函数">4.3日期和时间函数</h4>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>curdate()</td>
+<td>返回当前日期</td>
+</tr>
+<tr>
+<td>curtime()</td>
+<td>返回当前时间</td>
+</tr>
+<tr>
+<td>now()</td>
+<td>返回当前的日期和时间</td>
+</tr>
+<tr>
+<td>unix_timestamp(date)</td>
+<td>返回日期date的unix时间戳</td>
+</tr>
+<tr>
+<td>from_unixtime</td>
+<td>返回unix时间戳的日期值</td>
+</tr>
+<tr>
+<td>week(date)</td>
+<td>返回日期为date为一年中的第几周</td>
+</tr>
+<tr>
+<td>year(date)</td>
+<td>返回日期date的年份</td>
+</tr>
+<tr>
+<td>hour(time)</td>
+<td>返回time的小时值</td>
+</tr>
+<tr>
+<td>minute(time)</td>
+<td>返回time的分钟值</td>
+</tr>
+<tr>
+<td>monthname(date)</td>
+<td>返回date的月份值</td>
+</tr>
+<tr>
+<td>date_format(date,fmt)</td>
+<td>返回按字符串fmt格式化日期date值</td>
+</tr>
+<tr>
+<td>date_add(date,interval expr type)</td>
+<td>返回一个日期或时间值加上一个时间间隔的时间值</td>
+</tr>
+<tr>
+<td>datediff(expr,expr2)</td>
+<td>返回起始时间expr和结束时间expr2之间的天数</td>
+</tr>
+</tbody>
+</table>
+<h4 id="44流程函数">4.4流程函数</h4>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>if(value,t f )</td>
+<td>如果value是真，返回t，否则返回f</td>
+</tr>
+<tr>
+<td>ifnull(value1,value2)</td>
+<td>如果value不为空，返回value1，否则返回value2</td>
+</tr>
+<tr>
+<td>case when [value1] then [result1] ..else [default] end</td>
+<td>如果value1是真，返回result1，否则返回default</td>
+</tr>
+<tr>
+<td>case [expr] when [value1] then [result1]&hellip; else[default] end</td>
+<td>如果expr等于value1，返回result1，否则返回default</td>
+</tr>
+</tbody>
+</table>
+<h3 id="参考资料">参考资料</h3>
+<p>深入浅出MySQL（数据库开发、优化与管理维护）第2版</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Michaeljian</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-02-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <a href="/tags/mysql/">MySQL</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql%E4%B9%8B%E5%BC%80%E5%8F%91%E7%AF%87%E4%B8%80/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">深入浅出MySQL之开发篇（一）</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="zhoujian123@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.jianshu.com/u/0e1ea8a72008" class="iconfont icon-jianshu" title="jianshu"></a>
+      <a href="https://juejin.cn/user/2541726611803182" class="iconfont icon-juejin" title="juejin"></a>
+      <a href="https://github.com/Michaeljian" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/Michaelhbjian" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="http://Michaeljian.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Michaeljian</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

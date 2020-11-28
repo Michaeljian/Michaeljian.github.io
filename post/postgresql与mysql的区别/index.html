@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Postgresql与MySQL的区别 - Michaeljian</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Michaeljian" /><meta name="description" content="在学习具体的Postgresql用法之前，我们来思考一下Postgresql与目前最常用的关系型数据库MySQL的区别在哪里，主要集中在两者的底层结构、使用场景和特别之处。
+" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.1 with theme even" />
+
+
+<link rel="canonical" href="http://Michaeljian.github.io/post/postgresql%E4%B8%8Emysql%E7%9A%84%E5%8C%BA%E5%88%AB/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Postgresql与MySQL的区别" />
+<meta property="og:description" content="在学习具体的Postgresql用法之前，我们来思考一下Postgresql与目前最常用的关系型数据库MySQL的区别在哪里，主要集中在两者的底层结构、使用场景和特别之处。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://Michaeljian.github.io/post/postgresql%E4%B8%8Emysql%E7%9A%84%E5%8C%BA%E5%88%AB/" />
+<meta property="article:published_time" content="2019-03-18T16:55:01+00:00" />
+<meta property="article:modified_time" content="2019-03-18T16:55:01+00:00" />
+<meta itemprop="name" content="Postgresql与MySQL的区别">
+<meta itemprop="description" content="在学习具体的Postgresql用法之前，我们来思考一下Postgresql与目前最常用的关系型数据库MySQL的区别在哪里，主要集中在两者的底层结构、使用场景和特别之处。">
+<meta itemprop="datePublished" content="2019-03-18T16:55:01+00:00" />
+<meta itemprop="dateModified" content="2019-03-18T16:55:01+00:00" />
+<meta itemprop="wordCount" content="2136">
+
+
+
+<meta itemprop="keywords" content="Postgresql,Mysql," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Postgresql与MySQL的区别"/>
+<meta name="twitter:description" content="在学习具体的Postgresql用法之前，我们来思考一下Postgresql与目前最常用的关系型数据库MySQL的区别在哪里，主要集中在两者的底层结构、使用场景和特别之处。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Michaeljian</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Michaeljian</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Postgresql与MySQL的区别</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-03-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"> 数据库 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1前言">1.前言</a></li>
+            <li><a href="#2postgresql-vs-mysql">2.Postgresql vs MySQL</a></li>
+            <li><a href="#3disadvantages-of-using-mysqlmysql的缺点">3.Disadvantages of using MySQL（MySQL的缺点）</a></li>
+            <li><a href="#4disadvantages-of-using-postgresqlpostgresql的缺点">4.Disadvantages of using PostgreSQL（Postgresql的缺点）</a></li>
+            <li><a href="#5what-is-better">5.What is Better?</a></li>
+            <li><a href="#6参考资料">6.参考资料</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在学习具体的Postgresql用法之前，我们来思考一下Postgresql与目前最常用的关系型数据库MySQL的区别在哪里，主要集中在两者的底层结构、使用场景和特别之处。</p>
+<h3 id="1前言">1.前言</h3>
+<p>当我们去选择项目使用的数据库的时候，应该要考虑该项目的应用场景、数据规模等因素。每一种数据库都有它特定的应用场景，比如我们现在要讨论的Postgresql和MySQL数据库，这两种的数据库的应用场景就有所不同，下面我们就它们的相同点和不同点进行讨论。</p>
+<p><img src="http://www.postgresqltutorial.com/wp-content/uploads/2017/02/postgresql-vs-mysql-features.jpg" alt="PostgreSQL vs. MySQL"></p>
+<h3 id="2postgresql-vs-mysql">2.Postgresql vs MySQL</h3>
+<p>此表来源于<a href="http://www.postgresqltutorial.com/postgresql-vs-mysql/">postgresqltutorial</a>，详细区别了两者的不同点。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特性</th>
+<th style="text-align:center">Postgresql</th>
+<th style="text-align:center">MySQL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">描述</td>
+<td style="text-align:center">The world’s most <strong>advanced</strong> open source database</td>
+<td style="text-align:center">The world’s most <strong>popular</strong> open source database</td>
+</tr>
+<tr>
+<td style="text-align:center">发展</td>
+<td style="text-align:center">PostgreSQL is an open source <strong>project</strong></td>
+<td style="text-align:center">MySQL is an open-source <strong>product</strong></td>
+</tr>
+<tr>
+<td style="text-align:center">实现语言</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">C、C++</td>
+</tr>
+<tr>
+<td style="text-align:center">图形化工具</td>
+<td style="text-align:center">PgAdmin</td>
+<td style="text-align:center">MySQL Workbench</td>
+</tr>
+<tr>
+<td style="text-align:center">ACID</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center">存储引擎</td>
+<td style="text-align:center"><strong>Single</strong> storage engine</td>
+<td style="text-align:center"><strong>Multiple</strong> <a href="http://www.mysqltutorial.org/understand-mysql-table-types-innodb-myisam.aspx">storage engines</a> e.g., InnoDB and MyISAM</td>
+</tr>
+<tr>
+<td style="text-align:center">全文检索</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center">Drop a <a href="http://www.postgresqltutorial.com/postgresql-temporary-table/">temporary table</a>（删除一个临时表）</td>
+<td style="text-align:center">No <code>TEMP</code> or <code>TEMPORARY</code> keyword in <code>DROP TABLE</code> statement（随着数据库的连接的断开而被删除）</td>
+<td style="text-align:center">MySQL supports the <code>TEMP</code> or <code>TEMPORARY</code>keyword in the <code>DROP TABLE</code> statement that allows you to remove the temporary table only.（需要手动删除）</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-drop-table/"><code>DROP TABLE</code></a>（删除表）</td>
+<td style="text-align:center">Support <code>CASCADE</code> option to drop table’s dependent objects e.g., tables, views, etc.,（级联操作：也就是更新、删除父表，将会同步更新、删除子表；而反过来则不变）</td>
+<td style="text-align:center">Does not support <code>CASCADE</code> option</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-truncate-table/"><code>TRUNCATE TABLE</code></a>（删除表）</td>
+<td style="text-align:center">PostgreSQL <code>TRUNCATE TABLE</code>supports more features like <code>CASCADE</code>, <code>RESTART IDENTITY</code>, <code>CONTINUE IDENTITY</code>, transaction-safe, etc.（对于移除表中的数据，delete是可以的，但是对于一个大表，truncate是更加有效的方式，因为truncate删除表中所有行的时候不需要扫表整个表）</td>
+<td style="text-align:center"><a href="http://www.mysqltutorial.org/mysql-truncate-table/">MySQL <code>TRUNCATE TABLE</code></a> does not support <code>CASCADE</code> and transaction safe i.e,. once data is deleted, it cannot be rolled back.（永久性删除，不可以撤销）</td>
+</tr>
+<tr>
+<td style="text-align:center">自动增加列</td>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-serial/"><code>SERIAL</code></a></td>
+<td style="text-align:center"><a href="http://www.mysqltutorial.org/mysql-sequence/"><code>AUTO_INCREMENT</code></a></td>
+</tr>
+<tr>
+<td style="text-align:center">解析功能</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-data-types/">Data types</a></td>
+<td style="text-align:center">Support many advanced types such as <a href="http://www.postgresqltutorial.com/postgresql-array/">array</a>, <a href="http://www.postgresqltutorial.com/postgresql-hstore/">hstore</a>, and user-defined type.</td>
+<td style="text-align:center">SQL-standard types</td>
+</tr>
+<tr>
+<td style="text-align:center">Unsigned <a href="http://www.postgresqltutorial.com/postgresql-integer/">integer</a></td>
+<td style="text-align:center">No</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-boolean/">Boolean type</a></td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">Use <code>TINYINT(1)</code> internally for <a href="http://www.mysqltutorial.org/mysql-boolean/">Boolean</a></td>
+</tr>
+<tr>
+<td style="text-align:center">IP address data type</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center">设置列默认值</td>
+<td style="text-align:center">Support both constant and function call</td>
+<td style="text-align:center">Must be a constant or <code>CURRENT_TIMESTAMP</code> for <code>TIMESTAMP</code> or <code>DATETIME</code> columns</td>
+</tr>
+<tr>
+<td style="text-align:center">CTE（Common Table Expressions）</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>EXPLAIN</code>output</td>
+<td style="text-align:center">More detailed</td>
+<td style="text-align:center">Less detailed</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-materialized-views/">Materialized views</a>（物化视图）</td>
+<td style="text-align:center">Yes（Postgresql将视图概念扩展到下一个级别，允许视图在物理上存储数据，我们将这些视图称为物化视图，物化视图会缓存复杂的查询结果，然后允许定期刷新此结果）</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-check-constraint/">CHECK constraint</a>（检查约束）</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">No (MySQL ignores the <a href="http://www.mysqltutorial.org/mysql-check-constraint/">CHECK constraint</a>)</td>
+</tr>
+<tr>
+<td style="text-align:center">Table inheritance（表继承）</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center">Programming languages for <a href="http://www.postgresqltutorial.com/postgresql-stored-procedures/">stored procedures</a></td>
+<td style="text-align:center">Ruby, Perl, Python, TCL, PL/pgSQL, SQL, JavaScript, etc.</td>
+<td style="text-align:center">SQL:2003 syntax for <a href="http://www.mysqltutorial.org/mysql-stored-procedure-tutorial.aspx">stored procedures</a></td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-full-outer-join/"><code>FULL OUTER JOIN</code></a>（全外连接）</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-intersect/"><code>INTERSECT</code></a></td>
+<td style="text-align:center">Yes（Postgresql的INTERSECT运算符将两个或多个SELECT语句的结果集合并到一个结果集中）</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-tutorial/postgresql-except/"><code>EXCEPT</code></a></td>
+<td style="text-align:center">Yes（Except运算符通过比较两个或多个quires的结果集来返回行，此返回行存在于第一查询子句而不存在第二查询子句中）</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center">Partial indexes（部分索引）</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center">Bitmap indexes（位图索引）</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center">Expression indexes（表达式索引）</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td style="text-align:center">Covering indexes（覆盖索引）</td>
+<td style="text-align:center">Yes (since version 9.2)<a href="http://flacro.me/covering-index/">例子1</a>、<a href="http://getby.cn/sql__db/2016/0928/93.html">例子2</a></td>
+<td style="text-align:center">Yes. MySQL supports covering indexes that allow data to be retrieved by scanning the index alone without touching the table data. This is advantageous in case of large tables with millions of rows.</td>
+</tr>
+<tr>
+<td style="text-align:center">Common table expression (CTE)</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">Yes. (since version 8.0, MySQL has supported <a href="http://www.mysqltutorial.org/mysql-cte/">CTE</a>)</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://www.postgresqltutorial.com/postgresql-triggers/">Triggers</a>（触发器）</td>
+<td style="text-align:center">Support triggers that can fire on most types of command, except for ones affecting the database globally e.g., roles and tablespaces.</td>
+<td style="text-align:center">Limited to some commands</td>
+</tr>
+<tr>
+<td style="text-align:center">Partitioning（分区）</td>
+<td style="text-align:center">RANGE, LIST</td>
+<td style="text-align:center">RANGE, LIST, HASH, KEY, and composite partitioning using a combination of RANGE or LIST with HASH or KEY subpartitions</td>
+</tr>
+<tr>
+<td style="text-align:center">Task Schedule（任务定时）</td>
+<td style="text-align:center">pgAgent</td>
+<td style="text-align:center"><a href="http://www.mysqltutorial.org/mysql-triggers/working-mysql-scheduled-event/">Scheduled event</a></td>
+</tr>
+<tr>
+<td style="text-align:center">Connection Scalability（连接规模）</td>
+<td style="text-align:center">Each new connection is an OS process（进程）</td>
+<td style="text-align:center">Each new connection is an OS thread（线程）</td>
+</tr>
+<tr>
+<td style="text-align:center">SQL compliant（SQL兼容性）</td>
+<td style="text-align:center">PostgreSQL is largely SQL compliant.</td>
+<td style="text-align:center">MySQL is partially SQL compliant. For example, it does not support check constraint.</td>
+</tr>
+<tr>
+<td style="text-align:center">Best suited</td>
+<td style="text-align:center">PostgreSQL performance is utilized when executing complex queries.</td>
+<td style="text-align:center">MySQL performs well in OLAP&amp; OLTP systems when only read speeds are needed.</td>
+</tr>
+<tr>
+<td style="text-align:center">Support for JSON</td>
+<td style="text-align:center">Support JSON and other NoSQL features like native XML support. It also allows indexing JSON data for faster access.</td>
+<td style="text-align:center">MySQL has a JSON data type support but does not support any other NoSQL feature.</td>
+</tr>
+<tr>
+<td style="text-align:center">Default values</td>
+<td style="text-align:center">The default values can be changed at the system level only</td>
+<td style="text-align:center">The default values can be overwritten at the session level and the statement level</td>
+</tr>
+<tr>
+<td style="text-align:center">B-tree Indexes</td>
+<td style="text-align:center">B-tree indexes merged at runtime to evaluate are dynamically converted predicates.</td>
+<td style="text-align:center">Two or more B-tree indexes can be used when it is appropriate.</td>
+</tr>
+<tr>
+<td style="text-align:center">Object statistics</td>
+<td style="text-align:center">Very good object statistics</td>
+<td style="text-align:center">Fairly good object statistics</td>
+</tr>
+</tbody>
+</table>
+<p>对于上面有部分疑惑的点进行详细分析：</p>
+<h4 id="1full-outer-join全外连接">1、Full outer join全外连接</h4>
+<p>作用：Postgresql full outer join返回来自两个参与表的所有行，如果他们在相对的表上没有匹配，则使用null填充。full outer join组合了左外链接和右外连接的结果，并返回连接子句两侧表中的所有行（匹配或者不匹配）行。</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g8rwbj4j01j30ij0b0glu.jpg" alt="image.png"></p>
+<h3 id="3disadvantages-of-using-mysqlmysql的缺点">3.Disadvantages of using MySQL（MySQL的缺点）</h3>
+<ul>
+<li>Transactions related to system catalog are not ACID compliant（与系统目录相关的事务不符合ACID）</li>
+<li>Some time A server crash can corrupt the system catalog（有时服务器崩溃可能会破坏系统目录）</li>
+<li>No pluggable authentication module preventing centrally managed account（没有可插入的身份验证模块阻止集中管理账户）</li>
+<li>No support for roles so it is difficult in maintaining privileges for many users（不支持角色，因此很难为许多用户维护权限）</li>
+<li>Stored procedures are not cacheable（存储过程不可缓存）</li>
+<li>Tables used for the procedure or trigger are always pre-locked（用于程序或触发器的表始终是预先锁定的）</li>
+</ul>
+<h3 id="4disadvantages-of-using-postgresqlpostgresql的缺点">4.Disadvantages of using PostgreSQL（Postgresql的缺点）</h3>
+<ul>
+<li>The current external solutions require a high learning curve（当前的外部解决方案需要很高的学习曲线）</li>
+<li>No upgrade facility for major releases（没有主要版本的升级工具）</li>
+<li>The data need to be exported or replicated to the new version（需要将数据导出或复制到新版本）</li>
+<li>Double storage is needed during the upgrade process（升级过程中需要双重存储）</li>
+<li>indexes cannot be used to directly return the results of a query（索引不能用于直接返回查询结果）</li>
+<li>Query execution plans are not cached（不缓存查询执行计划）</li>
+<li>Bulk loading operations may become CPU bound（批量加载操作可能会受CPU限制）</li>
+<li>Sparse Independent Software Vendor support（稀疏独立软件供应商支持）</li>
+</ul>
+<h3 id="5what-is-better">5.What is Better?</h3>
+<p>After comparing both we can say that MySQL has done a great job of improving itself to keep relevant, but on the other side for PostgreSQL, you don&rsquo;t need any licensing. It also offers <strong>table inheritance, rules systems, custom data types, and database events</strong>. So, it certainly edges above MySQL.</p>
+<h3 id="6参考资料">6.参考资料</h3>
+<p><a href="https://hackr.io/blog/postgresql-vs-mysql">https://hackr.io/blog/postgresql-vs-mysql</a></p>
+<p><a href="https://www.guru99.com/postgresql-vs-mysql-difference.html">https://www.guru99.com/postgresql-vs-mysql-difference.html</a></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Michaeljian</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-03-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/postgresql/">Postgresql</a>
+          <a href="/tags/mysql/">Mysql</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/python%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python的基本数据结构</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/lru%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/">
+            <span class="next-text nav-default">如何设计实现一个LRU Cache</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="zhoujian123@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.jianshu.com/u/0e1ea8a72008" class="iconfont icon-jianshu" title="jianshu"></a>
+      <a href="https://juejin.cn/user/2541726611803182" class="iconfont icon-juejin" title="juejin"></a>
+      <a href="https://github.com/Michaeljian" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/Michaelhbjian" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="http://Michaeljian.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Michaeljian</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
